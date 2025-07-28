@@ -1,0 +1,17 @@
+{
+  "hash": "b746d8a8a9ee61f06ef2c4fece9847d8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Laplacian matrix\"\ncode-fold: true\nexecute:\n  echo: true\n---\n\n--- \n隣接行列$A$の次数$A_i$を対角成分にもつ次数行列$D$がある時  \n$Laplacian（L） = D - A$  \n\n性質として以下を持つ  \n- 行和・列和は０  \n- $L$は対称行列\n    - 固有値はすべて実数\n    - 固有ベクトルは互いに直行するように選ぶことができる\n    - 直行行列を用いてつねに対角化可能\n- 固有値0をもつ  \n- 固有値は非負  \n- 固有値0の多重数は、グラフの連結成分の数と等しい  \n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(igraph)\nlibrary(ggplot2)\n\n# generate matrix\nset.seed(1)\ng = random.graph.game(5,p.or.m = 0.6)\nE(g)$weight = runif(length(E(g)), 0, 10) |> as.integer()\n\nA = as_adj(g, attr=\"weight\") |> as.matrix()\nD = matrix(0, 5, 5)\ndiag(D) = rowSums(A)\nL = D-A\n# rowSums(L)\n# colSums(L)\n```\n:::\n\n### 対称行列$L$としての性質\n- 固有値はすべて実数  \n  \n- 固有ベクトルは互いに直行するように選ぶことができる  \n  \n- 直行行列を用いてつねに対角化可能\n",
+    "supporting": [
+      "laplacian_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

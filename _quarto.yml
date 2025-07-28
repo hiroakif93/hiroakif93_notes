@@ -1,6 +1,18 @@
 # sidebarとnavbarを紐づけるには、両方にTopページをいれる
 project:
   type: website
+  output-dir: docs
+
+execute:
+  freeze: auto
+      
+format:
+  html:
+    theme: 
+      - cosmo
+      - custom.scss
+    css: styles.css
+    toc: true
 
 website:
   title: "hiroakif93's Notes"
@@ -34,17 +46,18 @@ website:
   
   
   sidebar:
-    - title: "Dynamical system"
-      style: "docked"
-      contents: 
-        - section: Principal
-          contents: 
-            - systems/index.qmd
-            - systems/ricker.qmd
-        - section: Network
-          collapsed: true
-          contents: 
-            - systems/network/index.qmd
+    # - title: "Dynamical system"
+    #   style: "docked"
+    #   contents: 
+    #     - section: Principal
+    #       contents: 
+    #         - systems/index.qmd
+    #         - systems/ricker.qmd
+    #     - section: Network
+    #       collapsed: true
+    #       contents: 
+    #         - systems/network/index.qmd
+    #         - systems/network/laplacian.qmd
           
         
     - title: "Rwiki"
@@ -57,14 +70,6 @@ website:
             - r/grammer.qmd
         - section: ggplot2
   
-      
-format:
-  html:
-    theme: 
-      - cosmo
-      - custom.scss
-    css: styles.css
-    toc: true
 
 editor: visual
 

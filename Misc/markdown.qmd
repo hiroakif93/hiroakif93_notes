@@ -1,0 +1,20 @@
+## 基本書式
+| 文字 | 結果 |
+|:--|:--|
+|-|箇条書き|
+|1. |箇条書き|
+|#|構造のレベル|
+
+
+## Mermaid
+Markdownでフローチャートを書くための書式  
+Quarto markdown では、```{mermaid}```でMermaidを使用可能  
+
+```{mermaid}
+flowchart LR
+  A[A] --> B(B)
+  A[A] --> C(C)
+  B --> D[D]
+  C --> D[D]
+  
+```

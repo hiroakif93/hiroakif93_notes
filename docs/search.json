@@ -4,55 +4,42 @@
     "href": "systems/index.html",
     "title": "Systems",
     "section": "",
-    "text": "力学系について\n\n\n\n\n\nflowchart TD\n  A[System] --&gt; B(連続系)\n  A[System] --&gt; C(離散系)",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Systems"
-    ]
+    "text": "力学系について\n\n\n\n\n\nflowchart TD\n  A[System] --&gt; B(連続系)\n  A[System] --&gt; C(離散系)"
   },
   {
-    "objectID": "systems/ricker.html",
-    "href": "systems/ricker.html",
-    "title": "Ricker model",
+    "objectID": "systems/network/index.html",
+    "href": "systems/network/index.html",
+    "title": "Basics",
     "section": "",
-    "text": "離散時間モデルの一つ\n´\n\\[ N_{t+1} = \\exp[r(1-\\frac{N_t}{K})]N_t \\]\nNが個体数、rが増殖率、Kが環境収容力\nCode\nlogistic = \\(Nt,r) r*(1-Nt/1)\nricker = \\(Nt,r) exp( r*(1-Nt/1) )\n\ndf = data.frame(\n    Nt = seq(0.5,1.5,0.01),\n    r = seq(0.5,1.5,0.01),\n    logistic = NA,\n    ricker = NA\n)\nfor(i in 1:nrow(df)){\n    nt = df$Nt[i]\n    r = df$r[i]\n    df[i,\"logistic\"] = logistic(nt, r)\n    df[i,\"ricker\"] = ricker(nt, r)\n}\nCode\nxlim = range(df$Nt)\nylim = range(df[,3:4])\nxlab = \"Nt\"\nylab = \"Growth rate\"\n\npar(mar = c(4, 4, 0, 0)) \nplot(df$Nt, df[,\"logistic\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\npar(new=TRUE)\nplot(df$Nt, df[,\"ricker\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\nabline(h=0, lty=2, col=\"red\")\n\ntext(1.3, df[nrow(df),c(\"logistic\")], \"Logistic\", cex=1)\ntext(1.3, df[nrow(df),c(\"ricker\")], \"Ricker\", cex=1)",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Ricker model"
-    ]
+    "text": "ネットワーク：ものごとのつながりを表したもの、相互作用が生じるシステムのこと.\n例：情報ネットワーク, 社会ネットワーク, 遺伝子間ネットワーク\nグラフ：ネットワークを点と線で抽象化（数学的にモデル化）したもの.その理論体系をグラフ理論と呼ぶ."
   },
   {
-    "objectID": "systems/ricker.html#multi-species-ricker-model",
-    "href": "systems/ricker.html#multi-species-ricker-model",
-    "title": "Ricker model",
-    "section": "Multi-species Ricker model",
-    "text": "Multi-species Ricker model\n\\[ N_{i}(t+1) = \\exp[r_i(1+e_iAN(t))]N_i(t) \\] Nが個体数、rが増殖率、Kが環境収容力、M が相互作用行列、eが標準基底ベクトル（i番目=1、それ以外は0：i種が受ける影響をスカラーに直すためのもの）1.\n\n\nCode\nset.seed(250721)\n\nms_ricker = \\(N, r, A) exp( r*(1+A%*%N) ) * N\n\ntimes = 100\nsp = 10\n\n# -- generate dynamics\nN0 = as.integer( runif(sp, 1, 10) )\nr = runif(sp, 0.2,0.5)\n\nA = matrix(rnorm(sp*sp, mean=-0.2,sd=0.1), nrow=sp, ncol=sp)\nA[which(abs(A)&gt;0.25)] = 0\ndiag(A) = -1\n\nmat = matrix(0, nrow=times, ncol=sp)\nN = N0\nfor(i in 1:times) {N = ms_ricker(N, r, A); mat[i,]=N}\npar(mar = c(4, 4, 0, 0)) \nplot(0, type=\"n\", ylim=range(mat), xlim=c(1,times))\nfor(i in 1:5)lines(mat[,i], col=i)",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Ricker model"
-    ]
+    "objectID": "systems/network/index.html#ネットワークの用語",
+    "href": "systems/network/index.html#ネットワークの用語",
+    "title": "Basics",
+    "section": "ネットワークの用語",
+    "text": "ネットワークの用語\n\n\n\n単語\n\n意味\n\n\n\n\nNode/Vertex\nノード/節点（バーテックス）\n変数を代表する点\n\n\nEdge/Link\n辺/リンク\nノード間のつながりを示す\n\n\nDegree\n次数\nノードが持つリンクの数\n\n\nadjacency matrix\n隣接行列\nn x nの正方行列\n\n\n\n\nCode\nlibrary(igraph)\n\nmat = matrix(\n    c(c(1,0,0,1,0),\n    c(1,0,1,0,0),\n    c(0,0,0,1,0),\n    c(1,1,0,1,0),\n    c(1,1,1,1,0)),\n    nrow=5, ncol=5\n)\n\ng = igraph::graph_from_adjacency_matrix(mat)\npar(mar = c(0, 0, 0, 0), mfrow=c(1,2)) \nplot(g, \n    vertex.size=20, \n        vertex.label = degree(g),\n        vertex.label.cex=0.6,\n        vertex.label.family=\"Arial\",\n        vertex.label.font = 2,\n    loop.size = 2,\n    edge.arrow.mode=0)\nplot(g, \n    vertex.size=20, \n        vertex.label = degree(g),\n        vertex.label.cex=0.6,\n        vertex.label.family=\"Arial\",\n        vertex.label.font = 1,\n    loop.size = 2,\n    edge.arrow.mode=2)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 1: グラフの例. 丸がノードで,矢印がリンク,ノード内の数字が次数を意味する.\n左が方向性を持たない無向グラフ、右が有向グラフ."
   },
   {
-    "objectID": "systems/ricker.html#footnotes",
-    "href": "systems/ricker.html#footnotes",
-    "title": "Ricker model",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nChange et al., 2021, Ecol. lett.↩︎",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Ricker model"
-    ]
+    "objectID": "systems/network/index.html#グラフの種類",
+    "href": "systems/network/index.html#グラフの種類",
+    "title": "Basics",
+    "section": "グラフの種類",
+    "text": "グラフの種類\n\n\n\n\n\n\n\n\n単語\n\n意味\n\n\n\n\nUndirected graph\n無向グラフ\nつながりに方向性がないグラフ\n\n\nDirected graph\n有向グラフ\nつながりに方向性があるグラフ\n\n\nConnected graph\n連結グラフ\n任意の２ノード間に経路が存在する無向グラフ\n\n\nDisconnected graph\n非連結グラフ\n連結でない無向グラフ\n\n\nStrongly conncted graph\n強連結グラフ\n強連結な有向グラフ.有向グラフでは、いくつかの定義がある\n\n\n\n強連結グラフの例: 任意の２ノード間に双方向の経路が存在する場合\n\n連結/非連結グラフ\n非連結グラフにおいて、いくつかの連結グラフに分けられる時、その要素を連結成分と呼ぶ."
+  },
+  {
+    "objectID": "systems/network/index.html#ネットワークの特徴量",
+    "href": "systems/network/index.html#ネットワークの特徴量",
+    "title": "Basics",
+    "section": "ネットワークの特徴量",
+    "text": "ネットワークの特徴量\n\n\n\n\n\n\n\n\n単語\n意味\n式（上:無向,下:有向）\n\n\n\n\n総ノード数\nネットワークに含まれるノードの合計\n\\(N\\)\n\n\n次数\nノードiが持つリンクの数\n\\(k_i\\)\\(k_i^in + k_i^out\\)\n\n\n全リンク数\nネットワークに含まれるリンクの合計\n\\(L=\\frac{1}{2}\\sum k_i\\)\\(L=\\sum k_i\\)\n\n\n平均次数\nあるネットワークにおける次数の平均\n\\(\\hat{k}=\\frac{2L}{N}\\)\n\n\n次数分布 Degree distribution\n各ノードが持ちうる次数の度数分布\n\\(p_k = \\frac{N_k}{N}\\)\n\n\n\n\n次数分布"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "NOTEs",
+    "title": "Documents",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "ここでは、個人のメモを兼ねて、勉強したことをまとめています。"
   },
   {
     "objectID": "r/grammer.html",
@@ -79,6 +66,27 @@
     ]
   },
   {
+    "objectID": "Misc/markdown.html",
+    "href": "Misc/markdown.html",
+    "title": "hiroakif93's Notes",
+    "section": "",
+    "text": "文字\n結果\n\n\n\n\n-\n箇条書き\n\n\n1.\n箇条書き\n\n\n#\n構造のレベル"
+  },
+  {
+    "objectID": "Misc/markdown.html#基本書式",
+    "href": "Misc/markdown.html#基本書式",
+    "title": "hiroakif93's Notes",
+    "section": "",
+    "text": "文字\n結果\n\n\n\n\n-\n箇条書き\n\n\n1.\n箇条書き\n\n\n#\n構造のレベル"
+  },
+  {
+    "objectID": "Misc/markdown.html#mermaid",
+    "href": "Misc/markdown.html#mermaid",
+    "title": "hiroakif93's Notes",
+    "section": "Mermaid",
+    "text": "Mermaid\nMarkdownでフローチャートを書くための書式\nQuarto markdown では、{mermaid}でMermaidを使用可能\n\n\n\n\n\nflowchart LR\n  A[A] --&gt; B(B)\n  A[A] --&gt; C(C)\n  B --&gt; D[D]\n  C --&gt; D[D]"
+  },
+  {
     "objectID": "r/object.html",
     "href": "r/object.html",
     "title": "データ構造",
@@ -91,34 +99,31 @@
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "systems/ricker.html",
+    "href": "systems/ricker.html",
+    "title": "Ricker model",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "離散時間モデルの一つ\n´\n\\[ N_{t+1} = \\exp[r(1-\\frac{N_t}{K})]N_t \\]\nNが個体数、rが増殖率、Kが環境収容力\nCode\nlogistic = \\(Nt,r) r*(1-Nt/1)\nricker = \\(Nt,r) exp( r*(1-Nt/1) )\n\ndf = data.frame(\n    Nt = seq(0.5,1.5,0.01),\n    r = seq(0.5,1.5,0.01),\n    logistic = NA,\n    ricker = NA\n)\nfor(i in 1:nrow(df)){\n    nt = df$Nt[i]\n    r = df$r[i]\n    df[i,\"logistic\"] = logistic(nt, r)\n    df[i,\"ricker\"] = ricker(nt, r)\n}\nCode\nxlim = range(df$Nt)\nylim = range(df[,3:4])\nxlab = \"Nt\"\nylab = \"Growth rate\"\n\npar(mar = c(4, 4, 0, 0)) \nplot(df$Nt, df[,\"logistic\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\npar(new=TRUE)\nplot(df$Nt, df[,\"ricker\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\nabline(h=0, lty=2, col=\"red\")\n\ntext(1.3, df[nrow(df),c(\"logistic\")], \"Logistic\", cex=1)\ntext(1.3, df[nrow(df),c(\"ricker\")], \"Ricker\", cex=1)"
   },
   {
-    "objectID": "systems/network/index.html",
-    "href": "systems/network/index.html",
-    "title": "Basic idea",
-    "section": "",
-    "text": "ノード\nエッジ",
-    "crumbs": [
-      "Dynamical systems",
-      "Network",
-      "Basic idea"
-    ]
+    "objectID": "systems/ricker.html#multi-species-ricker-model",
+    "href": "systems/ricker.html#multi-species-ricker-model",
+    "title": "Ricker model",
+    "section": "Multi-species Ricker model",
+    "text": "Multi-species Ricker model\n\\[ N_{i}(t+1) = \\exp[r_i(1+e_iAN(t))]N_i(t) \\] Nが個体数、rが増殖率、Kが環境収容力、M が相互作用行列、eが標準基底ベクトル（i番目=1、それ以外は0：i種が受ける影響をスカラーに直すためのもの）1.\n\n\nCode\nset.seed(250721)\n\nms_ricker = \\(N, r, A) exp( r*(1+A%*%N) ) * N\n\ntimes = 100\nsp = 10\n\n# -- generate dynamics\nN0 = as.integer( runif(sp, 1, 10) )\nr = runif(sp, 0.2,0.5)\n\nA = matrix(rnorm(sp*sp, mean=-0.2,sd=0.1), nrow=sp, ncol=sp)\nA[which(abs(A)&gt;0.25)] = 0\ndiag(A) = -1\n\nmat = matrix(0, nrow=times, ncol=sp)\nN = N0\nfor(i in 1:times) {N = ms_ricker(N, r, A); mat[i,]=N}\npar(mar = c(4, 4, 0, 0)) \nplot(0, type=\"n\", ylim=range(mat), xlim=c(1,times))\nfor(i in 1:5)lines(mat[,i], col=i)"
   },
   {
-    "objectID": "systems/network/index.html#ネットワークの単位",
-    "href": "systems/network/index.html#ネットワークの単位",
-    "title": "Basic idea",
+    "objectID": "systems/ricker.html#footnotes",
+    "href": "systems/ricker.html#footnotes",
+    "title": "Ricker model",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nChange et al., 2021, Ecol. lett.↩︎"
+  },
+  {
+    "objectID": "systems/network/laplacian.html",
+    "href": "systems/network/laplacian.html",
+    "title": "Laplacian matrix",
     "section": "",
-    "text": "ノード\nエッジ",
-    "crumbs": [
-      "Dynamical systems",
-      "Network",
-      "Basic idea"
-    ]
+    "text": "隣接行列\\(A\\)の次数\\(A_i\\)を対角成分にもつ次数行列\\(D\\)がある時\n\\(Laplacian（L） = D - A\\)\n性質として以下を持つ\n- 行和・列和は０\n- \\(L\\)は対称行列 - 固有値はすべて実数 - 固有ベクトルは互いに直行するように選ぶことができる - 直行行列を用いてつねに対角化可能 - 固有値0をもつ\n- 固有値は非負\n- 固有値0の多重数は、グラフの連結成分の数と等しい\n\n\nCode\nlibrary(igraph)\nlibrary(ggplot2)\n\n# generate matrix\nset.seed(1)\ng = random.graph.game(5,p.or.m = 0.6)\nE(g)$weight = runif(length(E(g)), 0, 10) |&gt; as.integer()\n\nA = as_adj(g, attr=\"weight\") |&gt; as.matrix()\nD = matrix(0, 5, 5)\ndiag(D) = rowSums(A)\nL = D-A\n# rowSums(L)\n# colSums(L)\n\n\n\n対称行列\\(L\\)としての性質\n\n固有値はすべて実数\n固有ベクトルは互いに直行するように選ぶことができる\n直行行列を用いてつねに対角化可能"
   }
 ]

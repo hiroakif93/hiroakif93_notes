@@ -1,0 +1,45 @@
+---
+title: "Laplacian matrix"
+code-fold: true
+execute:
+  echo: true
+---
+
+--- 
+隣接行列$A$の次数$A_i$を対角成分にもつ次数行列$D$がある時  
+$Laplacian（L） = D - A$  
+
+性質として以下を持つ  
+- 行和・列和は０  
+- $L$は対称行列
+    - 固有値はすべて実数
+    - 固有ベクトルは互いに直行するように選ぶことができる
+    - 直行行列を用いてつねに対角化可能
+- 固有値0をもつ  
+- 固有値は非負  
+- 固有値0の多重数は、グラフの連結成分の数と等しい  
+
+```{r}
+#| warning: false
+library(igraph)
+library(ggplot2)
+
+# generate matrix
+set.seed(1)
+g = random.graph.game(5,p.or.m = 0.6)
+E(g)$weight = runif(length(E(g)), 0, 10) |> as.integer()
+
+A = as_adj(g, attr="weight") |> as.matrix()
+D = matrix(0, 5, 5)
+diag(D) = rowSums(A)
+L = D-A
+# rowSums(L)
+# colSums(L)
+```
+
+### 対称行列$L$としての性質
+- 固有値はすべて実数  
+  
+- 固有ベクトルは互いに直行するように選ぶことができる  
+  
+- 直行行列を用いてつねに対角化可能
