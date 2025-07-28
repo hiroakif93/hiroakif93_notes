@@ -1,0 +1,102 @@
+```{=html}
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js">
+</script>
+```
+
+```{=html}
+<script type="text/x-mathjax-config">
+ MathJax.Hub.Config({
+ tex2jax: {
+ inlineMath: [['$', '$'] ],
+ displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ }
+ });
+</script>
+```
+
+---
+title: "Ricker model"
+code-fold: true
+---
+
+-   離散時間モデルの一つ\
+    ´
+
+$$ N_{t+1} = \exp[r(1-\frac{N_t}{K})]N_t $$
+
+Nが個体数、rが増殖率、Kが環境収容力
+
+-   離散ロジスティックモデルとの違いは、 \$ \\exp \$ をかけることで、**増殖率が負にならない**ようにしている.
+
+```{r}
+logistic = \(Nt,r) r*(1-Nt/1)
+ricker = \(Nt,r) exp( r*(1-Nt/1) )
+
+df = data.frame(
+    Nt = seq(0.5,1.5,0.01),
+    r = seq(0.5,1.5,0.01),
+    logistic = NA,
+    ricker = NA
+)
+for(i in 1:nrow(df)){
+    nt = df$Nt[i]
+    r = df$r[i]
+    df[i,"logistic"] = logistic(nt, r)
+    df[i,"ricker"] = ricker(nt, r)
+}
+
+```
+
+```{r fig.width=3, fig.height=2, dpi=120}
+
+xlim = range(df$Nt)
+ylim = range(df[,3:4])
+xlab = "Nt"
+ylab = "Growth rate"
+
+par(mar = c(4, 4, 0, 0)) 
+plot(df$Nt, df[,"logistic"], type="l", 
+     xlim=xlim, ylim=ylim,
+     xlab=xlab, ylab=ylab)
+par(new=TRUE)
+plot(df$Nt, df[,"ricker"], type="l", 
+     xlim=xlim, ylim=ylim,
+     xlab=xlab, ylab=ylab)
+abline(h=0, lty=2, col="red")
+
+text(1.3, df[nrow(df),c("logistic")], "Logistic", cex=1)
+text(1.3, df[nrow(df),c("ricker")], "Ricker", cex=1)
+```
+
+-   生態学においては、隣り合う世代が重なり合わない動態を記述する時に用いられるモデル. 観測データもそれにあたる？\
+    例：１世代ごとに繁殖する虫, 観測データ
+
+## Multi-species Ricker model
+
+$$ N_{i}(t+1) = \exp[r_i(1+e_iAN(t))]N_i(t) $$ *N*が個体数、*r*が増殖率、*K*が環境収容力、*M* が相互作用行列、*e*が標準基底ベクトル（i番目=1、それ以外は0：i種が受ける影響をスカラーに直すためのもの）[^1].
+
+[^1]: Change et al., 2021, *Ecol. lett.*
+
+```{r}
+set.seed(250721)
+
+ms_ricker = \(N, r, A) exp( r*(1+A%*%N) ) * N
+
+times = 100
+sp = 10
+
+# -- generate dynamics
+N0 = as.integer( runif(sp, 1, 10) )
+r = runif(sp, 0.2,0.5)
+
+A = matrix(rnorm(sp*sp, mean=-0.2,sd=0.1), nrow=sp, ncol=sp)
+A[which(abs(A)>0.25)] = 0
+diag(A) = -1
+
+mat = matrix(0, nrow=times, ncol=sp)
+N = N0
+for(i in 1:times) {N = ms_ricker(N, r, A); mat[i,]=N}
+par(mar = c(4, 4, 0, 0)) 
+plot(0, type="n", ylim=range(mat), xlim=c(1,times))
+for(i in 1:5)lines(mat[,i], col=i)
+```

@@ -1,0 +1,70 @@
+# sidebarとnavbarを紐づけるには、両方にTopページをいれる
+project:
+  type: website
+
+website:
+  title: "hiroakif93's Notes"
+  page-footer: 
+    left: |
+      <p style="text-align: left; padding-left: 5%;">
+        Copyright 2024, Hiroaki Fujita.<br>
+        Graduate School of Biostudies,<br>
+        Center for Living Systems Information Science (CeLiSIS),<br>
+        Kyoto University.
+      </p>
+      
+    right: 
+      - text: Hiroaki Fujita's Website
+        href: https://hiroakif93.github.io
+      - icon: github
+        href: https://github.com/hiroakif93
+      - text: Google scholar 
+        href: https://scholar.google.com/citations?hl=ja&user=YaIBsrwAAAAJ
+  
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "HOME"
+        href: index.qmd
+      - text: "R wiki"
+        href: r/index.qmd
+      - text: "Dynamical systems"
+        href: systems/index.qmd
+  
+  
+  sidebar:
+    - title: "Dynamical system"
+      style: "docked"
+      contents: 
+        - section: Principal
+          contents: 
+            - systems/index.qmd
+            - systems/ricker.qmd
+        - section: Network
+          collapsed: true
+          contents: 
+            - systems/network/index.qmd
+          
+        
+    - title: "Rwiki"
+      style: "docked"
+      contents: 
+        - section: 基礎
+          contents: 
+            - r/index.qmd
+            - r/object.qmd
+            - r/grammer.qmd
+        - section: ggplot2
+  
+      
+format:
+  html:
+    theme: 
+      - cosmo
+      - custom.scss
+    css: styles.css
+    toc: true
+
+editor: visual
+
