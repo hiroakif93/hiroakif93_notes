@@ -4,7 +4,7 @@
     "href": "systems/index.html",
     "title": "Systems",
     "section": "",
-    "text": "力学系について\n\n\n\n\n\nflowchart TD\n  A[System] --&gt; B(連続系)\n  A[System] --&gt; C(離散系)"
+    "text": "力学系について"
   },
   {
     "objectID": "systems/network/index.html",
