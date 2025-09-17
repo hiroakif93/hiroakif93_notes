@@ -1,0 +1,12 @@
+---
+title: "安定性"
+format: html
+---
+
+生態学界隈で使われる安定性の定義に関した総説.\
+[Pimm, 1987](https://doi.org/10.1038/307321a0)\
+[Ives and Carpenter, 2007](https://doi.org/10.1126/science.1133258)\
+[Meerbeek et al., 2021](https://doi.org/10.1111/1365-2745.13651)\
+[Chen et al., 2024](https://doi.org/10.1016/j.physrep.2024.08.001)
+
+評価したいことに対して、適切な安定性指標を用いる必要性がある.

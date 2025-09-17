@@ -1,14 +1,29 @@
-## 基本書式
-| 文字 | 結果 |
-|:--|:--|
-|-|箇条書き|
-|1. |箇条書き|
-|#|構造のレベル|
+---
+title: Quarto Markdown syntax
+description-meta: "Quarto Markdownの書式"
+---
 
+\[Quartoで使えるMarkdownの書式\](<https://quarto.org/docs/authoring/markdown-basics.html>)
+
+## 基本書式
+
+| 文字                             | 結果           |
+|:---------------------------------|:---------------|
+| \-                               | 箇条書き       |
+| 1\.                              | 箇条書き       |
+| \#                               | 構造のレベル   |
+| [リンクテキスト](URL "タイトル") | リンク付き書式 |
+| :::{.callout-note} <br> :::      | 補足説明       |
+| \[\^1\] \[\^1:\]                 | 脚注           |
+
+::: callout-note
+Note that there are five types of callouts, including: `note`, `tip`, `warning`, `caution`, and `important`.
+:::
 
 ## Mermaid
-Markdownでフローチャートを書くための書式  
-Quarto markdown では、```{mermaid}```でMermaidを使用可能  
+
+Markdownでフローチャートを書くための書式\
+Quarto markdown では、`{mermaid}`でMermaidを使用可能
 
 ```{mermaid}
 flowchart LR

@@ -1,0 +1,63 @@
+---
+title: "局所安定性解析"
+format: html
+keywords: 
+  - Resilience 
+  - 連続時間システム
+  - 群集
+code-fold: true
+---
+
+平衡点に達している時に、摂動（ノイズ）が与えられた時に、元の平衡点に戻る力[^1].\
+Resilience[^2]に相当する.
+
+[^1]: [May, 1972](https://doi-org.kyoto-u.idm.oclc.org/10.1038/238413a0)
+
+[^2]: [Hollings, 1993](http://www.jstor.org/stable/2096802.)
+
+計算としては、すべての固有値で、実数部分が負であれば安定、正の値があれば不安定を意味する.
+  
+以下、Stefano　Allesinaの[Lecture note](https://stefanoallesina.github.io/Theoretical_Community_Ecology/index.html)を参考に解説  
+--  
+  
+連続系の一般化Lotka-Volterraモデルから、システムの安定性を考える.  
+
+*Generalized Lotka-Volterra model*  
+$\frac{dx_i(t)}{dt} = x_i(t)*(r_i+\sum_{j}{A_{ij}x_j(t)})$  
+  
+以上の式の意味は、  
+**種iの変化量は、種i x (種iの増殖率 + 他種からの影響の総和)**  
+を意味する.
+
+```{r}
+lv_fun = \(A, r, N) r*N * (1 - A %*% N)
+
+model = function(time, dt=1000, A, r, N0){
+
+    mat = matrix(0, ncol=length(N0), nrow=time)
+    mat[1,] = N = N0
+    for(t in 2:time){
+
+      for(ddt in 1:dt){
+          dn = lv_fun(A, r, N)      
+          N = N+dn/dt
+      }      
+      mat[t,] = N
+    }
+
+    mat
+}
+
+r = c(1, 0.72, 1.53, 1.27)
+A = t(matrix(c(1, 1.09, 1.52, 0,
+               0, 1, 0.44, 1.36,
+               2.33, 0, 1, 0.47,
+               1.21, 0.51, 0.35, 1), 4, 4))
+
+mat = model(time=1000, dt=1000, A, r, N0=runif(4, 0.1, 0.2))
+plot(mat[,1])
+plot(0, type='n', xlim=c(1,nrow(mat)), ylim = range(mat), cex.axis = 0.8, xlab="時間", ylab = "個体数")
+for(l in 1:ncol(mat)) lines(mat[,l], col=l)
+    
+
+```

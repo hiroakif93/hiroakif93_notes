@@ -3,19 +3,22 @@ project:
   type: website
   output-dir: docs
 
-execute:
-  freeze: auto
-      
 format:
   html:
     theme: 
-      - cosmo
       - custom.scss
+    minimal: true
     css: styles.css
     toc: true
+    other-links:
+      - text: Hiroaki Fujita's Website
+        href: https://github.com/hiroakif93/
+
+brand: _brand.yaml
 
 website:
   title: "hiroakif93's Notes"
+  site-url: "https://github.com/hiroakif93/"
   page-footer: 
     left: |
       <p style="text-align: left; padding-left: 5%;">
@@ -25,9 +28,7 @@ website:
         Kyoto University.
       </p>
       
-    right: 
-      - text: Hiroaki Fujita's Website
-        href: https://hiroakif93.github.io
+    right:       
       - icon: github
         href: https://github.com/hiroakif93
       - text: Google scholar 
@@ -41,35 +42,48 @@ website:
         href: index.qmd
       - text: "R wiki"
         href: r/index.qmd
+      - text: "Bioinfomatics"
+        href: bioinfo/index.qmd
       - text: "Dynamical systems"
         href: systems/index.qmd
   
   
   sidebar:
-    # - title: "Dynamical system"
-    #   style: "docked"
-    #   contents: 
-    #     - section: Principal
-    #       contents: 
-    #         - systems/index.qmd
-    #         - systems/ricker.qmd
-    #     - section: Network
-    #       collapsed: true
-    #       contents: 
-    #         - systems/network/index.qmd
-    #         - systems/network/laplacian.qmd
+    - title: "Dynamical system"
+      style: "docked"
+      contents: 
+        - section: Principal
+          contents: 
+            - systems/index.qmd
+            - systems/ricker.qmd
+            - systems/stability.qmd
+        - section: Network
+          collapsed: true
+          contents: 
+            - systems/network/index.qmd
+            - systems/network/laplacian.qmd
           
-        
     - title: "Rwiki"
       style: "docked"
       contents: 
         - section: 基礎
           contents: 
             - r/index.qmd
+            - r/programing.qmd
             - r/object.qmd
             - r/grammer.qmd
         - section: ggplot2
-  
 
+    - title: "Bioinfo"
+      style: "docked"
+      contents: 
+        - bioinfo/index.qmd
+        - section: NCBI
+          contents: 
+            - bioinfo/NCBI/blast.qmd
+            - bioinfo/NCBI/ncbi_genome_download.qmd
+            
+
+  
 editor: visual
 

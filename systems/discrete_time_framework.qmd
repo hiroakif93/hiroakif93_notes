@@ -1,0 +1,18 @@
+---
+title: 離散時間システム
+---
+
+観測データが、離散時間システムで支配されていると仮定した時の解釈について述べる
+
+::: callout-note
+実際は、観測データを支配しているシステムの定義は非常に困難
+:::
+
+$x(t+1) = x(t) + F(x(t))$  
+$F$: 生産率と死亡率を合わせた関数（$F = B(x(t)) - D(x(t))$）  
+
+### References
+
+::: {#refs}
+1. Miki, Takeshi, et al. "How to quantify interaction strengths? A critical rethinking of the interaction Jacobian and evaluation methods for non-parametric inference in time series analysis." Physica D: Nonlinear Phenomena 476 (2025): 134613. 
+:::

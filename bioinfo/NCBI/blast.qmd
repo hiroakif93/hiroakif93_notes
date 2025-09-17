@@ -1,0 +1,14 @@
+---
+title: "BLAST+"
+---
+
+以下から、プログラムとデータベースをダウンロード可能\
+[blast+ download ページ](https://blast.ncbi.nlm.nih.gov/doc/blast-help/downloadblastdata.html)\
+[BLAST database](https://ftp.ncbi.nlm.nih.gov/blast/db/)
+
+## BLAST database
+
+ダウンロード方法はいくつかある.\
+1. FTPサーバーから直接ダウンロード\
+2. wgetで取得\
+3. [ncbi-blast-dbs](https://github.com/yeban/ncbi-blast-dbs)を使用

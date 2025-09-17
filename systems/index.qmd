@@ -2,11 +2,4 @@
 title: "Systems"
 ---
 
-力学系について
-
-```{mermaid}
-flowchart TD
-  A[System] --> B(連続系)
-  A[System] --> C(離散系)
-  
-```
+力学系についてのメモ書き

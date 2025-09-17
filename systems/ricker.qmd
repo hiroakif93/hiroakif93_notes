@@ -1,19 +1,3 @@
-```{=html}
-<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js">
-</script>
-```
-
-```{=html}
-<script type="text/x-mathjax-config">
- MathJax.Hub.Config({
- tex2jax: {
- inlineMath: [['$', '$'] ],
- displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
- }
- });
-</script>
-```
-
 ---
 title: "Ricker model"
 code-fold: true
@@ -21,7 +5,6 @@ code-fold: true
 
 -   離散時間モデルの一つ\
     ´
-
 $$ N_{t+1} = \exp[r(1-\frac{N_t}{K})]N_t $$
 
 Nが個体数、rが増殖率、Kが環境収容力
@@ -29,6 +12,7 @@ Nが個体数、rが増殖率、Kが環境収容力
 -   離散ロジスティックモデルとの違いは、 \$ \\exp \$ をかけることで、**増殖率が負にならない**ようにしている.
 
 ```{r}
+# 環境収容力を１とした
 logistic = \(Nt,r) r*(1-Nt/1)
 ricker = \(Nt,r) exp( r*(1-Nt/1) )
 
@@ -70,6 +54,41 @@ text(1.3, df[nrow(df),c("ricker")], "Ricker", cex=1)
 
 -   生態学においては、隣り合う世代が重なり合わない動態を記述する時に用いられるモデル. 観測データもそれにあたる？\
     例：１世代ごとに繁殖する虫, 観測データ
+
+::: {#fig-caption-crossref}
+```{r fig.width=5, fig.height=3, dpi=120}
+
+par(
+    mfrow =c (3,1),
+    mar = c(2,4,4,0)
+)
+
+for(r in c(0.1, 1.6, 3.5)){
+
+    nt = 0.5
+    for(t in 1:100) nt = c(ricker(nt[1], r), nt)
+    plot(nt, type='l', xlab="")
+    title(paste("r =", r))
+}
+
+```
+
+Growth rateを変えたときの挙動
+
+```{r  fig.width=3, fig.height=3, dpi=120}
+
+state = c()
+for(r in seq(-4, 4, 0.2)){
+    nt = 0.5
+    for(t in 1:100) nt = ricker(nt, r)
+    state = c(state, nt)
+}
+
+plot(seq(-4, 4, 0.2), state, xlab="r")
+```
+
+Growth rateを変えたときの100時間点目のNt
+:::
 
 ## Multi-species Ricker model
 

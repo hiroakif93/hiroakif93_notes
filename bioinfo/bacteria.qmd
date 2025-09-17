@@ -1,0 +1,8 @@
+---
+title: "Bacteria Note"
+---
+
+|Phylum|Class|Order|Family|Genus|Species|
+|:--|:--|:--|:--|:--|:--|
+|Pseudomonadati|Acidobacteriota|Blastocatellia|Blastocatellales||||
+||||||||

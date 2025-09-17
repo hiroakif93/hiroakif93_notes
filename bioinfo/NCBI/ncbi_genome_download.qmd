@@ -1,0 +1,20 @@
+---
+title: "NCBI genome download"
+---
+
+1.  ダウンロードするファイル数・サイズが小さければ以下のページから  [NCBI Genome](https://www.ncbi.nlm.nih.gov/datasets/genome/)
+
+2.  ダウンロードするファイル数・サイズが大きければ以下のツールを使用  [NCBI Datasets command-line tools](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/command-line-tools/download-and-install/ "NCBI Datasets command-line tools")
+
+::: {#fig-caption-crossref}
+Metadataのダウンロード例
+```
+datasets summary genome taxon 2 \
+    --assembly-level complete,chromosome,scaffold,contig \
+    --assembly-source RefSeq \
+    --exclude-atypical \
+    --as-json-lines | \
+    dataformat tsv genome --fields $field\
+    > ./Appendix/data/ncbi_data.tsv
+```
+:::

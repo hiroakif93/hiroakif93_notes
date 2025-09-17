@@ -1,5 +1,5 @@
 .navbar {
-  background: #c3dad5d4;
+  background:rgba(195, 218, 213, 0.47);
   border-bottom: 1px solid #b0c4de ; 
   
   font-size: 1.2rem;
@@ -37,4 +37,14 @@ footer p {
 #quarto-header {
   display: flex;
   flex-direction: column;
+}
+
+.site-header-banner {
+  background-color: #d1e7dd;
+  color: #073c2d;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
 }
