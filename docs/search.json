@@ -1,14 +1,280 @@
 [
   {
-    "objectID": "systems/index.html",
-    "href": "systems/index.html",
-    "title": "Systems",
+    "objectID": "systems/discrete_time_framework.html",
+    "href": "systems/discrete_time_framework.html",
+    "title": "離散時間システム",
     "section": "",
-    "text": "力学系についてのメモ書き",
+    "text": "観測データが、離散時間システムで支配されていると仮定した時の解釈について述べる\n\n\n\n\n\n\nNote\n\n\n\n実際は、観測データを支配しているシステムの定義は非常に困難\n\n\n\\(x(t+1) = x(t) + F(x(t))\\)\n\\(F\\): 生産率と死亡率を合わせた関数（\\(F = B(x(t)) - D(x(t))\\)）\n\nReferences\n\n\nMiki, Takeshi, et al. “How to quantify interaction strengths? A critical rethinking of the interaction Jacobian and evaluation methods for non-parametric inference in time series analysis.” Physica D: Nonlinear Phenomena 476 (2025): 134613."
+  },
+  {
+    "objectID": "systems/stability/local_stability.html",
+    "href": "systems/stability/local_stability.html",
+    "title": "局所安定性解析",
+    "section": "",
+    "text": "平衡点に達している時に、摂動（ノイズ）が与えられた時に、元の平衡点に戻る力1.\nResilience2に相当する.\n計算としては、すべての固有値で、実数部分が負であれば安定、正の値があれば不安定を意味する."
+  },
+  {
+    "objectID": "systems/stability/local_stability.html#以下stefano-allesinaのlecture-noteを参考に解説",
+    "href": "systems/stability/local_stability.html#以下stefano-allesinaのlecture-noteを参考に解説",
+    "title": "局所安定性解析",
+    "section": "以下、Stefano　AllesinaのLecture noteを参考に解説",
+    "text": "以下、Stefano　AllesinaのLecture noteを参考に解説\n連続系の一般化Lotka-Volterraモデルから、システムの安定性を考える.\nGeneralized Lotka-Volterra model\n\\(\\frac{dx_i(t)}{dt} = x_i(t)*(r_i+\\sum_{j}{A_{ij}x_j(t)})\\)\n以上の式の意味は、\n種iの変化量は、種i x (種iの増殖率 + 他種からの影響の総和)\nを意味する.\n\n\nCode\nlv_fun = \\(A, r, N) r*N * (1 - A %*% N)\n\nmodel = function(time, dt=1000, A, r, N0){\n\n    mat = matrix(0, ncol=length(N0), nrow=time)\n    mat[1,] = N = N0\n    for(t in 2:time){\n\n      for(ddt in 1:dt){\n          dn = lv_fun(A, r, N)      \n          N = N+dn/dt\n      }      \n      mat[t,] = N\n    }\n\n    mat\n}\n\nr = c(1, 0.72, 1.53, 1.27)\nA = t(matrix(c(1, 1.09, 1.52, 0,\n               0, 1, 0.44, 1.36,\n               2.33, 0, 1, 0.47,\n               1.21, 0.51, 0.35, 1), 4, 4))\n\nmat = model(time=1000, dt=1000, A, r, N0=runif(4, 0.1, 0.2))\nplot(mat[,1])\n\n\n\n\n\n\n\n\n\nCode\nplot(0, type='n', xlim=c(1,nrow(mat)), ylim = range(mat), cex.axis = 0.8, xlab=\"時間\", ylab = \"個体数\")\nfor(l in 1:ncol(mat)) lines(mat[,l], col=l)"
+  },
+  {
+    "objectID": "systems/stability/local_stability.html#footnotes",
+    "href": "systems/stability/local_stability.html#footnotes",
+    "title": "局所安定性解析",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nMay, 1972↩︎\nHollings, 1993↩︎"
+  },
+  {
+    "objectID": "systems/network/laplacian.html",
+    "href": "systems/network/laplacian.html",
+    "title": "Laplacian matrix",
+    "section": "",
+    "text": "隣接行列\\(A\\)の次数\\(A_i\\)を対角成分にもつ次数行列\\(D\\)がある時\n\\(Laplacian（L） = D - A\\)\n性質として以下を持つ\n- 行和・列和は０\n- \\(L\\)は対称行列 - 固有値はすべて実数 - 固有ベクトルは互いに直行するように選ぶことができる - 直行行列を用いてつねに対角化可能 - 固有値0をもつ\n- 固有値は非負\n- 固有値0の多重数は、グラフの連結成分の数と等しい\n\n\nCode\nlibrary(igraph)\nlibrary(ggplot2)\n\n# generate matrix\nset.seed(1)\ng = random.graph.game(5,p.or.m = 0.6)\nE(g)$weight = runif(length(E(g)), 0, 10) |&gt; as.integer()\n\nA = as_adj(g, attr=\"weight\") |&gt; as.matrix()\nD = matrix(0, 5, 5)\ndiag(D) = rowSums(A)\nL = D-A\n# rowSums(L)\n# colSums(L)\n\n\n\n対称行列\\(L\\)としての性質\n\n固有値はすべて実数\n固有ベクトルは互いに直行するように選ぶことができる\n直行行列を用いてつねに対角化可能",
+    "crumbs": [
+      "Dynamical systems",
+      "Network",
+      "Laplacian matrix"
+    ]
+  },
+  {
+    "objectID": "stat/glmm.html",
+    "href": "stat/glmm.html",
+    "title": "一般化線形モデル",
+    "section": "",
+    "text": "Generalized linear regression model."
+  },
+  {
+    "objectID": "stat/glmm.html#カテゴリ変数を用いた回帰1",
+    "href": "stat/glmm.html#カテゴリ変数を用いた回帰1",
+    "title": "一般化線形モデル",
+    "section": "カテゴリ変数を用いた回帰1",
+    "text": "カテゴリ変数を用いた回帰1\nカテゴリ変数を用いた回帰では、以下を行なっている.\n- 回帰係数は基準カテゴリとの差\n- 「あるカテゴリが基準カテゴリと平均的に差があるか」を検定\n\\(y = x_{p1}b_1 + x_{p2}b_2 + b_0\\)\n上式の内、\\(x_{p2}\\)が2つの要素(AとB)を持つカテゴリ変数とした時、カテゴリ変数をダミー変数にして,\n\\(A = 1\\)\n\\(B = 0\\)\nここで、それぞれの要素について考えた時、以下のようになる.\nAの時 \\(y = x_{p1}b_1 + b_2 + b_0\\)\nBの時 \\(y = x_{p1}b_1 + b_0\\)\nつまり、同じ\\(x_{p1}\\)の値を持っている時は、平均的に\\(b_2\\)だけ差があるのを意味する."
+  },
+  {
+    "objectID": "stat/glmm.html#footnotes",
+    "href": "stat/glmm.html#footnotes",
+    "title": "一般化線形モデル",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nテキスト「統計的方法論特殊研究（多変量解析)」（分寺杏介, 神戸大学）↩︎"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Documents",
+    "section": "",
+    "text": "ここでは、個人のメモを兼ねて、勉強したことをまとめています。\necho a"
+  },
+  {
+    "objectID": "bioinfo/index.html",
+    "href": "bioinfo/index.html",
+    "title": "Bioinfomatics",
+    "section": "",
+    "text": "Bioinfomatics関連情報のメモ書き",
+    "crumbs": [
+      "Bioinfomatics"
+    ]
+  },
+  {
+    "objectID": "bioinfo/NCBI/blast.html",
+    "href": "bioinfo/NCBI/blast.html",
+    "title": "BLAST+",
+    "section": "",
+    "text": "以下から、プログラムとデータベースをダウンロード可能\nblast+ download ページ\nBLAST database",
+    "crumbs": [
+      "Bioinfomatics",
+      "NCBI",
+      "BLAST+"
+    ]
+  },
+  {
+    "objectID": "bioinfo/NCBI/blast.html#blast-database",
+    "href": "bioinfo/NCBI/blast.html#blast-database",
+    "title": "BLAST+",
+    "section": "BLAST database",
+    "text": "BLAST database\nダウンロード方法はいくつかある.\n1. FTPサーバーから直接ダウンロード\n2. wgetで取得\n3. ncbi-blast-dbsを使用",
+    "crumbs": [
+      "Bioinfomatics",
+      "NCBI",
+      "BLAST+"
+    ]
+  },
+  {
+    "objectID": "r/grammer.html",
+    "href": "r/grammer.html",
+    "title": "Rの文法",
+    "section": "",
+    "text": "オブジェクトに値を代入するには、&lt;-または= を使う.\n# xに10を代入\nx &lt;- 10 \n\n# yに20を代入\ny = 20 \n\n# xとyを足した値をzに代入\nz &lt;- x+y \n\n\n\n\nオブジェクトからの値の取り出しかたには、オブジェクトのクラスによって異なる.\n\nスカラー（ベクトルの長さが1のもの）のオブジェクトの場合、x自体が値を持つ.\n\n\nx &lt;- 10\nx\n\nベクトルのオブジェクトの場合、x[1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\n\n\nx &lt;- c(1, 2, 3, 4, 5) #ベクトルを作成\nx[1] # 1番目の要素を取り出す\nx[2] # 2番目の要素を取り出す\nx[3] # 3番目の要素を取り出す\n\nベクトルに名前がついている時は、x[名前]と指定して値を取り出すことも可能.\n\n\nnames(x) &lt;- c(\"a\", \"b\", \"c\", \"d\", \"e\") # ベクトルに名前をつける\nx[\"a\"] # 名前がaの要素を取り出す\n\n行列・データフレームのオブジェクトの場合、x[1, 1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\nカギ括弧内の前の数字は行のインデックス、後ろの数字は列のインデックスを表す.\n\n\nx &lt;- matrix(1:9, nrow=3, ncol=3) # 3x3の行列を作成\nx[1, 1] # 1行1列目の要素を取り出す\nx[1, 2] # 1行2列目の要素を取り出す\nx[2, 3] # 2行3列目の要素を取り出す\nx[1, ] # 1行目の全ての要素を取り出す\nx[ , 2] # 2列目の全ての要素を取り出す\ny &lt;- data.frame(x=1:3, y=4:6) # データフレームを作成\ny[1, 1] # 1行1列目の要素を取り出す\ny[1, 2] # 1行2列目の要素を取り出す\ny[1, ] # 1行目の全ての要素を取り出す\ny[ , 2] # 2列目の全ての要素を取り出す\n\n行名、列名がついている場合は、x[“行名”, “列名”]と指定して値を取り出すことも可能.\n\n\nrownames(x) &lt;- c('A', 'B', 'C')\ncolnames(x) &lt;- c('D', 'E', 'F')\nx['A', 'D']  # 1行1列目の要素を取り出す",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "Rの文法"
+    ]
+  },
+  {
+    "objectID": "r/grammer.html#rの記法について紹介",
+    "href": "r/grammer.html#rの記法について紹介",
+    "title": "Rの文法",
+    "section": "",
+    "text": "オブジェクトに値を代入するには、&lt;-または= を使う.\n# xに10を代入\nx &lt;- 10 \n\n# yに20を代入\ny = 20 \n\n# xとyを足した値をzに代入\nz &lt;- x+y \n\n\n\n\nオブジェクトからの値の取り出しかたには、オブジェクトのクラスによって異なる.\n\nスカラー（ベクトルの長さが1のもの）のオブジェクトの場合、x自体が値を持つ.\n\n\nx &lt;- 10\nx\n\nベクトルのオブジェクトの場合、x[1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\n\n\nx &lt;- c(1, 2, 3, 4, 5) #ベクトルを作成\nx[1] # 1番目の要素を取り出す\nx[2] # 2番目の要素を取り出す\nx[3] # 3番目の要素を取り出す\n\nベクトルに名前がついている時は、x[名前]と指定して値を取り出すことも可能.\n\n\nnames(x) &lt;- c(\"a\", \"b\", \"c\", \"d\", \"e\") # ベクトルに名前をつける\nx[\"a\"] # 名前がaの要素を取り出す\n\n行列・データフレームのオブジェクトの場合、x[1, 1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\nカギ括弧内の前の数字は行のインデックス、後ろの数字は列のインデックスを表す.\n\n\nx &lt;- matrix(1:9, nrow=3, ncol=3) # 3x3の行列を作成\nx[1, 1] # 1行1列目の要素を取り出す\nx[1, 2] # 1行2列目の要素を取り出す\nx[2, 3] # 2行3列目の要素を取り出す\nx[1, ] # 1行目の全ての要素を取り出す\nx[ , 2] # 2列目の全ての要素を取り出す\ny &lt;- data.frame(x=1:3, y=4:6) # データフレームを作成\ny[1, 1] # 1行1列目の要素を取り出す\ny[1, 2] # 1行2列目の要素を取り出す\ny[1, ] # 1行目の全ての要素を取り出す\ny[ , 2] # 2列目の全ての要素を取り出す\n\n行名、列名がついている場合は、x[“行名”, “列名”]と指定して値を取り出すことも可能.\n\n\nrownames(x) &lt;- c('A', 'B', 'C')\ncolnames(x) &lt;- c('D', 'E', 'F')\nx['A', 'D']  # 1行1列目の要素を取り出す",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "Rの文法"
+    ]
+  },
+  {
+    "objectID": "r/programing.html",
+    "href": "r/programing.html",
+    "title": "プログラムの基礎",
+    "section": "",
+    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
+  },
+  {
+    "objectID": "r/programing.html#フォルダの階層性",
+    "href": "r/programing.html#フォルダの階層性",
+    "title": "プログラムの基礎",
+    "section": "",
+    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
+  },
+  {
+    "objectID": "r/programing.html#rでの操作",
+    "href": "r/programing.html#rでの操作",
+    "title": "プログラムの基礎",
+    "section": "2. Rでの操作",
+    "text": "2. Rでの操作\n自分がどこにいるのか＝working directoryを調べる方法はgetwd()を用いる.\n括弧の中は、何も入れない.\n\ncurrent_dir = getwd()\nprint(current_dir)\n\nWorking directoryを変えるには、setwd()を用いる.\n括弧の中に変更先のフォルダ名を入れる. フォルダ名はダブルクォーテション（““）で括る.\n\nsetwd(\"/home/user/folder\")\n\n\nファイル・フォルダの操作\nRからファイルやフォルダを操作することができるので、その例を紹介する.\n\n\n\n関数名\n機能\n\n\n\n\ndir.create()\nフォルダの作成\n\n\nlist.files()\nWorking directory内のファイル一覧を表示\n\n\nlist.dirs()\nWorking directory内のフォルダ一覧を表示\n\n\n\n\ndir.create()\n括弧内に作りたいフォルダ名を記入.\nWorking directoryに新しいフォルダは作られる.\n\n\ndir.create(\"folder\")\n\n\nlist.files() 指定したフォルダ内のファイル一覧を表示. デフォルトではWorking directoryを検索する. full.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\n\nlist.files(\"folder\", full.names=TRUE) \n\n\nlist.dirs()\n指定したフォルダ内のフォルダ一覧を表示. デフォルトではWorking directoryを検索する.\nfull.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.dirs(\"folder\", full.names=TRUE)",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
+  },
+  {
+    "objectID": "Misc/unix.html",
+    "href": "Misc/unix.html",
+    "title": "Unixコマンド",
+    "section": "",
+    "text": "コマンド\n説明\n例\n\n\n\n\nscp\nサーバーからのファイルをダウンロード\nscp ユーザ名@サーバのホスト名:ファイル名 ローカルのフォルダ"
+  },
+  {
+    "objectID": "Misc/research_proposal.html",
+    "href": "Misc/research_proposal.html",
+    "title": "研究助成の申請書",
+    "section": "",
+    "text": "科研費（日本学術振興会:JSPS)\n\n1-2ページで以下をまとめる\n\n\n概要\n\n背景・問い・目的と内容・研究達成により得られる成果を最大10行\n\n\n\n背景\n\n前半に分野の背景、後半に自分の研究の構成\n図入りで１ページが目安\n審査員は勉強してその分野に詳しくなりたいわけではない\n\n\n\n着想に至った経緯\n\n研究課題に取り組もうと思った理由・課題にたどりついた経緯\n個人的な研究活動の経験を踏まえて述べる\n\n\n\n研究課題の核心をなす学術的「問い」\n\n研究分野において解決しなければならない課題\n問題と解決の必要性の理由を書く\n「しかしながら〜」で書く\n\n\n\n目的\n\n学術的「問い」を解決することなので、前節に重複してもOK\n\n\n\n学術的独自性と創造性\n\n学術的独自性\n以下が伝わるように書く\n\n申請課題の重要性\nオリジナリティ\n申請者でないとできない理由・優位性\n他の研究と比較して書く\nただし、自分の上位互換は気にしなくていい\n\n\n創造性\n\n研究分野に与えるインパクト\n研究の展開\n他の研究分野、学術全般、あるいは社会に対してどのような影響（波及効果）\n独自性と分量が同程度になるように注意\n\n\n\n\n関連する国内外の研究動向と本研究の位置づけ\n\n学術的「問い」の解決に取り組んでいる国内外の最近 の研究について述べる\nワークショップやシンポジウムを取り上げてもよい？\n後半で、申請課題の研究と他の人の先行研究を比較したときの相違点と優位性を述べる\n\n\n\n3ページ目以降\n\n\n\n本研究で何をどのように、どこまで明らかにしようとするのか\n\n申請書の中で一番重要。図を含めて 1 ページ以上\n冒頭に全研究計画の概要と使用する方法を簡潔にまとめる\n独立に実施できるサブテーマを立てる. 1つのテーマが破綻しても問題がないことをアピール"
+  },
+  {
+    "objectID": "Misc/markdown.html",
+    "href": "Misc/markdown.html",
+    "title": "Quarto Markdown syntax",
+    "section": "",
+    "text": "[Quartoで使えるMarkdownの書式](https://quarto.org/docs/authoring/markdown-basics.html)"
+  },
+  {
+    "objectID": "Misc/markdown.html#基本書式",
+    "href": "Misc/markdown.html#基本書式",
+    "title": "Quarto Markdown syntax",
+    "section": "基本書式",
+    "text": "基本書式\n\n\n\n文字\n結果\n\n\n\n\n-\n箇条書き\n\n\n1.\n箇条書き\n\n\n#\n構造のレベル\n\n\nリンクテキスト\nリンク付き書式\n\n\n:::{.callout-note}  :::\n補足説明\n\n\n[^1] [^1:]\n脚注\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote that there are five types of callouts, including: note, tip, warning, caution, and important."
+  },
+  {
+    "objectID": "Misc/markdown.html#mermaid",
+    "href": "Misc/markdown.html#mermaid",
+    "title": "Quarto Markdown syntax",
+    "section": "Mermaid",
+    "text": "Mermaid\nMarkdownでフローチャートを書くための書式\nQuarto markdown では、{mermaid}でMermaidを使用可能\n\n\n\n\n\nflowchart LR\n  A[A] --&gt; B(B)\n  A[A] --&gt; C(C)\n  B --&gt; D[D]\n  C --&gt; D[D]"
+  },
+  {
+    "objectID": "Misc/unix copy.html",
+    "href": "Misc/unix copy.html",
+    "title": "Unixコマンド",
+    "section": "",
+    "text": "コマンド\n説明\n例\n\n\n\n\nscp\nサーバーからのファイルをダウンロード\nscp ユーザ名@サーバのホスト名:ファイル名 ローカルのフォルダ"
+  },
+  {
+    "objectID": "r/object.html",
+    "href": "r/object.html",
+    "title": "データ構造",
+    "section": "",
+    "text": "直感的な理解は、データ構造や処理結果を保存したもの. 以下では、Rが扱うデータ構造 = 型とクラスについて説明する.\n\n\nRで扱える型\n\n\n\n\n\n\n\n\n型名\n書き方\n例\n\n\n\n\n文字型/character型\n文字をシングルクォート（’）またはダブルクォート（“）で囲むことで表現.\n‘a’, “a”\n\n\n数値型/numeric型\n小数点を含む数字はnumeric型になる.\n1.0, 2.0, 3.1415. * “1”だと文字列型.\n\n\n整数型/integer型\n整数のみを扱う数値型. 特に操作しなければ数字だけ打つとnumeric型になる.\n1L, 2L, 3L\n\n\n論理型/logical型\n論理式(==, &gt;など)を扱う時に用いる型. 論理型は整数値でも表すことができ、TRUEは1、FALSEは0として扱われる。\nTRUE, FALSE, NA\n\n\nfactor\nNA\n\n\n\nNULL\nNULL\n\n\n\nNaN\nNaN\n\n\n\nInf\nInf\n\n\n\n-Inf\n-Inf\n\n\n\n\n\n\n\n\nRのクラス\n\nベクトル/vector\n行列/matrix, array\nデータフレーム/data.frame\nlist",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "データ構造"
+    ]
+  },
+  {
+    "objectID": "bioinfo/NCBI/ncbi_genome_download.html",
+    "href": "bioinfo/NCBI/ncbi_genome_download.html",
+    "title": "NCBI genome download",
+    "section": "",
+    "text": "ダウンロードするファイル数・サイズが小さければ以下のページから NCBI Genome\nダウンロードするファイル数・サイズが大きければ以下のツールを使用 NCBI Datasets command-line tools\n\n\n\n\nMetadataのダウンロード例\ndatasets summary genome taxon 2 \\\n    --assembly-level complete,chromosome,scaffold,contig \\\n    --assembly-source RefSeq \\\n    --exclude-atypical \\\n    --as-json-lines | \\\n    dataformat tsv genome --fields $field\\\n    &gt; ./Appendix/data/ncbi_data.tsv\n\n\nFigure 1",
+    "crumbs": [
+      "Bioinfomatics",
+      "NCBI",
+      "NCBI genome download"
+    ]
+  },
+  {
+    "objectID": "bioinfo/bacteria.html",
+    "href": "bioinfo/bacteria.html",
+    "title": "Bacteria Note",
+    "section": "",
+    "text": "Phylum\nClass\nOrder\nFamily\nGenus\nSpecies\n\n\n\n\nPseudomonadati\nAcidobacteriota\nBlastocatellia\nBlastocatellales"
+  },
+  {
+    "objectID": "stat/lifemap.html",
+    "href": "stat/lifemap.html",
+    "title": "Lifemap",
+    "section": "",
+    "text": "Lifemap"
+  },
+  {
+    "objectID": "systems/ricker.html",
+    "href": "systems/ricker.html",
+    "title": "Ricker model",
+    "section": "",
+    "text": "離散時間モデルの一つ\n´ \\[ N_{t+1} = \\exp[r(1-\\frac{N_t}{K})]N_t \\]\nNが個体数、rが増殖率、Kが環境収容力\nCode\n# 環境収容力を１とした\nlogistic = \\(Nt,r) r*(1-Nt/1)\nricker = \\(Nt,r) exp( r*(1-Nt/1) )\n\ndf = data.frame(\n    Nt = seq(0.5,1.5,0.01),\n    r = seq(0.5,1.5,0.01),\n    logistic = NA,\n    ricker = NA\n)\nfor(i in 1:nrow(df)){\n    nt = df$Nt[i]\n    r = df$r[i]\n    df[i,\"logistic\"] = logistic(nt, r)\n    df[i,\"ricker\"] = ricker(nt, r)\n}\nCode\nxlim = range(df$Nt)\nylim = range(df[,3:4])\nxlab = \"Nt\"\nylab = \"Growth rate\"\n\npar(mar = c(4, 4, 0, 0)) \nplot(df$Nt, df[,\"logistic\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\npar(new=TRUE)\nplot(df$Nt, df[,\"ricker\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\nabline(h=0, lty=2, col=\"red\")\n\ntext(1.3, df[nrow(df),c(\"logistic\")], \"Logistic\", cex=1)\ntext(1.3, df[nrow(df),c(\"ricker\")], \"Ricker\", cex=1)",
     "crumbs": [
       "Dynamical systems",
       "Principal",
-      "Systems"
+      "Ricker model"
+    ]
+  },
+  {
+    "objectID": "systems/ricker.html#multi-species-ricker-model",
+    "href": "systems/ricker.html#multi-species-ricker-model",
+    "title": "Ricker model",
+    "section": "Multi-species Ricker model",
+    "text": "Multi-species Ricker model\n\\[ N_{i}(t+1) = \\exp[r_i(1+e_iAN(t))]N_i(t) \\] Nが個体数、rが増殖率、Kが環境収容力、M が相互作用行列、eが標準基底ベクトル（i番目=1、それ以外は0：i種が受ける影響をスカラーに直すためのもの）1.\n\n\nCode\nset.seed(250721)\n\nms_ricker = \\(N, r, A) exp( r*(1+A%*%N) ) * N\n\ntimes = 100\nsp = 10\n\n# -- generate dynamics\nN0 = as.integer( runif(sp, 1, 10) )\nr = runif(sp, 0.2,0.5)\n\nA = matrix(rnorm(sp*sp, mean=-0.2,sd=0.1), nrow=sp, ncol=sp)\nA[which(abs(A)&gt;0.25)] = 0\ndiag(A) = -1\n\nmat = matrix(0, nrow=times, ncol=sp)\nN = N0\nfor(i in 1:times) {N = ms_ricker(N, r, A); mat[i,]=N}\npar(mar = c(4, 4, 0, 0)) \nplot(0, type=\"n\", ylim=range(mat), xlim=c(1,times))\nfor(i in 1:5)lines(mat[,i], col=i)",
+    "crumbs": [
+      "Dynamical systems",
+      "Principal",
+      "Ricker model"
+    ]
+  },
+  {
+    "objectID": "systems/ricker.html#footnotes",
+    "href": "systems/ricker.html#footnotes",
+    "title": "Ricker model",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nChange et al., 2021, Ecol. lett.↩︎",
+    "crumbs": [
+      "Dynamical systems",
+      "Principal",
+      "Ricker model"
     ]
   },
   {
@@ -60,178 +326,16 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Documents",
+    "objectID": "systems/index.html",
+    "href": "systems/index.html",
+    "title": "Systems",
     "section": "",
-    "text": "ここでは、個人のメモを兼ねて、勉強したことをまとめています。\necho a"
-  },
-  {
-    "objectID": "r/grammer.html",
-    "href": "r/grammer.html",
-    "title": "Rの文法",
-    "section": "",
-    "text": "オブジェクトに値を代入するには、&lt;-または= を使う.\n# xに10を代入\nx &lt;- 10 \n\n# yに20を代入\ny = 20 \n\n# xとyを足した値をzに代入\nz &lt;- x+y \n\n\n\n\nオブジェクトからの値の取り出しかたには、オブジェクトのクラスによって異なる.\n\nスカラー（ベクトルの長さが1のもの）のオブジェクトの場合、x自体が値を持つ.\n\n\nx &lt;- 10\nx\n\nベクトルのオブジェクトの場合、x[1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\n\n\nx &lt;- c(1, 2, 3, 4, 5) #ベクトルを作成\nx[1] # 1番目の要素を取り出す\nx[2] # 2番目の要素を取り出す\nx[3] # 3番目の要素を取り出す\n\nベクトルに名前がついている時は、x[名前]と指定して値を取り出すことも可能.\n\n\nnames(x) &lt;- c(\"a\", \"b\", \"c\", \"d\", \"e\") # ベクトルに名前をつける\nx[\"a\"] # 名前がaの要素を取り出す\n\n行列・データフレームのオブジェクトの場合、x[1, 1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\nカギ括弧内の前の数字は行のインデックス、後ろの数字は列のインデックスを表す.\n\n\nx &lt;- matrix(1:9, nrow=3, ncol=3) # 3x3の行列を作成\nx[1, 1] # 1行1列目の要素を取り出す\nx[1, 2] # 1行2列目の要素を取り出す\nx[2, 3] # 2行3列目の要素を取り出す\nx[1, ] # 1行目の全ての要素を取り出す\nx[ , 2] # 2列目の全ての要素を取り出す\ny &lt;- data.frame(x=1:3, y=4:6) # データフレームを作成\ny[1, 1] # 1行1列目の要素を取り出す\ny[1, 2] # 1行2列目の要素を取り出す\ny[1, ] # 1行目の全ての要素を取り出す\ny[ , 2] # 2列目の全ての要素を取り出す\n\n行名、列名がついている場合は、x[“行名”, “列名”]と指定して値を取り出すことも可能.\n\n\nrownames(x) &lt;- c('A', 'B', 'C')\ncolnames(x) &lt;- c('D', 'E', 'F')\nx['A', 'D']  # 1行1列目の要素を取り出す",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "Rの文法"
-    ]
-  },
-  {
-    "objectID": "r/grammer.html#rの記法について紹介",
-    "href": "r/grammer.html#rの記法について紹介",
-    "title": "Rの文法",
-    "section": "",
-    "text": "オブジェクトに値を代入するには、&lt;-または= を使う.\n# xに10を代入\nx &lt;- 10 \n\n# yに20を代入\ny = 20 \n\n# xとyを足した値をzに代入\nz &lt;- x+y \n\n\n\n\nオブジェクトからの値の取り出しかたには、オブジェクトのクラスによって異なる.\n\nスカラー（ベクトルの長さが1のもの）のオブジェクトの場合、x自体が値を持つ.\n\n\nx &lt;- 10\nx\n\nベクトルのオブジェクトの場合、x[1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\n\n\nx &lt;- c(1, 2, 3, 4, 5) #ベクトルを作成\nx[1] # 1番目の要素を取り出す\nx[2] # 2番目の要素を取り出す\nx[3] # 3番目の要素を取り出す\n\nベクトルに名前がついている時は、x[名前]と指定して値を取り出すことも可能.\n\n\nnames(x) &lt;- c(\"a\", \"b\", \"c\", \"d\", \"e\") # ベクトルに名前をつける\nx[\"a\"] # 名前がaの要素を取り出す\n\n行列・データフレームのオブジェクトの場合、x[1, 1]のように、カギ括弧内で取り出したい位置（インデックス）を指定して取り出す.\nカギ括弧内の前の数字は行のインデックス、後ろの数字は列のインデックスを表す.\n\n\nx &lt;- matrix(1:9, nrow=3, ncol=3) # 3x3の行列を作成\nx[1, 1] # 1行1列目の要素を取り出す\nx[1, 2] # 1行2列目の要素を取り出す\nx[2, 3] # 2行3列目の要素を取り出す\nx[1, ] # 1行目の全ての要素を取り出す\nx[ , 2] # 2列目の全ての要素を取り出す\ny &lt;- data.frame(x=1:3, y=4:6) # データフレームを作成\ny[1, 1] # 1行1列目の要素を取り出す\ny[1, 2] # 1行2列目の要素を取り出す\ny[1, ] # 1行目の全ての要素を取り出す\ny[ , 2] # 2列目の全ての要素を取り出す\n\n行名、列名がついている場合は、x[“行名”, “列名”]と指定して値を取り出すことも可能.\n\n\nrownames(x) &lt;- c('A', 'B', 'C')\ncolnames(x) &lt;- c('D', 'E', 'F')\nx['A', 'D']  # 1行1列目の要素を取り出す",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "Rの文法"
-    ]
-  },
-  {
-    "objectID": "Misc/markdown.html",
-    "href": "Misc/markdown.html",
-    "title": "Quarto Markdown syntax",
-    "section": "",
-    "text": "[Quartoで使えるMarkdownの書式](https://quarto.org/docs/authoring/markdown-basics.html)"
-  },
-  {
-    "objectID": "Misc/markdown.html#基本書式",
-    "href": "Misc/markdown.html#基本書式",
-    "title": "Quarto Markdown syntax",
-    "section": "基本書式",
-    "text": "基本書式\n\n\n\n文字\n結果\n\n\n\n\n-\n箇条書き\n\n\n1.\n箇条書き\n\n\n#\n構造のレベル\n\n\nリンクテキスト\nリンク付き書式\n\n\n:::{.callout-note}  :::\n補足説明\n\n\n[^1] [^1:]\n脚注\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nNote that there are five types of callouts, including: note, tip, warning, caution, and important."
-  },
-  {
-    "objectID": "Misc/markdown.html#mermaid",
-    "href": "Misc/markdown.html#mermaid",
-    "title": "Quarto Markdown syntax",
-    "section": "Mermaid",
-    "text": "Mermaid\nMarkdownでフローチャートを書くための書式\nQuarto markdown では、{mermaid}でMermaidを使用可能\n\n\n\n\n\nflowchart LR\n  A[A] --&gt; B(B)\n  A[A] --&gt; C(C)\n  B --&gt; D[D]\n  C --&gt; D[D]"
-  },
-  {
-    "objectID": "r/object.html",
-    "href": "r/object.html",
-    "title": "データ構造",
-    "section": "",
-    "text": "直感的な理解は、データ構造や処理結果を保存したもの. 以下では、Rが扱うデータ構造 = 型とクラスについて説明する.\n\n\nRで扱える型\n\n\n\n\n\n\n\n\n型名\n書き方\n例\n\n\n\n\n文字型/character型\n文字をシングルクォート（’）またはダブルクォート（“）で囲むことで表現.\n‘a’, “a”\n\n\n数値型/numeric型\n小数点を含む数字はnumeric型になる.\n1.0, 2.0, 3.1415. * “1”だと文字列型.\n\n\n整数型/integer型\n整数のみを扱う数値型. 特に操作しなければ数字だけ打つとnumeric型になる.\n1L, 2L, 3L\n\n\n論理型/logical型\n論理式(==, &gt;など)を扱う時に用いる型. 論理型は整数値でも表すことができ、TRUEは1、FALSEは0として扱われる。\nTRUE, FALSE, NA\n\n\nfactor\nNA\n\n\n\nNULL\nNULL\n\n\n\nNaN\nNaN\n\n\n\nInf\nInf\n\n\n\n-Inf\n-Inf\n\n\n\n\n\n\n\n\nRのクラス\n\nベクトル/vector\n行列/matrix, array\nデータフレーム/data.frame\nlist",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "データ構造"
-    ]
-  },
-  {
-    "objectID": "systems/ricker.html",
-    "href": "systems/ricker.html",
-    "title": "Ricker model",
-    "section": "",
-    "text": "離散時間モデルの一つ\n´ \\[ N_{t+1} = \\exp[r(1-\\frac{N_t}{K})]N_t \\]\nNが個体数、rが増殖率、Kが環境収容力\nCode\n# 環境収容力を１とした\nlogistic = \\(Nt,r) r*(1-Nt/1)\nricker = \\(Nt,r) exp( r*(1-Nt/1) )\n\ndf = data.frame(\n    Nt = seq(0.5,1.5,0.01),\n    r = seq(0.5,1.5,0.01),\n    logistic = NA,\n    ricker = NA\n)\nfor(i in 1:nrow(df)){\n    nt = df$Nt[i]\n    r = df$r[i]\n    df[i,\"logistic\"] = logistic(nt, r)\n    df[i,\"ricker\"] = ricker(nt, r)\n}\nCode\nxlim = range(df$Nt)\nylim = range(df[,3:4])\nxlab = \"Nt\"\nylab = \"Growth rate\"\n\npar(mar = c(4, 4, 0, 0)) \nplot(df$Nt, df[,\"logistic\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\npar(new=TRUE)\nplot(df$Nt, df[,\"ricker\"], type=\"l\", \n     xlim=xlim, ylim=ylim,\n     xlab=xlab, ylab=ylab)\nabline(h=0, lty=2, col=\"red\")\n\ntext(1.3, df[nrow(df),c(\"logistic\")], \"Logistic\", cex=1)\ntext(1.3, df[nrow(df),c(\"ricker\")], \"Ricker\", cex=1)",
+    "text": "力学系についてのメモ書き",
     "crumbs": [
       "Dynamical systems",
       "Principal",
-      "Ricker model"
+      "Systems"
     ]
-  },
-  {
-    "objectID": "systems/ricker.html#multi-species-ricker-model",
-    "href": "systems/ricker.html#multi-species-ricker-model",
-    "title": "Ricker model",
-    "section": "Multi-species Ricker model",
-    "text": "Multi-species Ricker model\n\\[ N_{i}(t+1) = \\exp[r_i(1+e_iAN(t))]N_i(t) \\] Nが個体数、rが増殖率、Kが環境収容力、M が相互作用行列、eが標準基底ベクトル（i番目=1、それ以外は0：i種が受ける影響をスカラーに直すためのもの）1.\n\n\nCode\nset.seed(250721)\n\nms_ricker = \\(N, r, A) exp( r*(1+A%*%N) ) * N\n\ntimes = 100\nsp = 10\n\n# -- generate dynamics\nN0 = as.integer( runif(sp, 1, 10) )\nr = runif(sp, 0.2,0.5)\n\nA = matrix(rnorm(sp*sp, mean=-0.2,sd=0.1), nrow=sp, ncol=sp)\nA[which(abs(A)&gt;0.25)] = 0\ndiag(A) = -1\n\nmat = matrix(0, nrow=times, ncol=sp)\nN = N0\nfor(i in 1:times) {N = ms_ricker(N, r, A); mat[i,]=N}\npar(mar = c(4, 4, 0, 0)) \nplot(0, type=\"n\", ylim=range(mat), xlim=c(1,times))\nfor(i in 1:5)lines(mat[,i], col=i)",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Ricker model"
-    ]
-  },
-  {
-    "objectID": "systems/ricker.html#footnotes",
-    "href": "systems/ricker.html#footnotes",
-    "title": "Ricker model",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nChange et al., 2021, Ecol. lett.↩︎",
-    "crumbs": [
-      "Dynamical systems",
-      "Principal",
-      "Ricker model"
-    ]
-  },
-  {
-    "objectID": "systems/network/laplacian.html",
-    "href": "systems/network/laplacian.html",
-    "title": "Laplacian matrix",
-    "section": "",
-    "text": "隣接行列\\(A\\)の次数\\(A_i\\)を対角成分にもつ次数行列\\(D\\)がある時\n\\(Laplacian（L） = D - A\\)\n性質として以下を持つ\n- 行和・列和は０\n- \\(L\\)は対称行列 - 固有値はすべて実数 - 固有ベクトルは互いに直行するように選ぶことができる - 直行行列を用いてつねに対角化可能 - 固有値0をもつ\n- 固有値は非負\n- 固有値0の多重数は、グラフの連結成分の数と等しい\n\n\nCode\nlibrary(igraph)\nlibrary(ggplot2)\n\n# generate matrix\nset.seed(1)\ng = random.graph.game(5,p.or.m = 0.6)\nE(g)$weight = runif(length(E(g)), 0, 10) |&gt; as.integer()\n\nA = as_adj(g, attr=\"weight\") |&gt; as.matrix()\nD = matrix(0, 5, 5)\ndiag(D) = rowSums(A)\nL = D-A\n# rowSums(L)\n# colSums(L)\n\n\n\n対称行列\\(L\\)としての性質\n\n固有値はすべて実数\n固有ベクトルは互いに直行するように選ぶことができる\n直行行列を用いてつねに対角化可能"
-  },
-  {
-    "objectID": "bioinfo/index.html",
-    "href": "bioinfo/index.html",
-    "title": "Bioinfomatics",
-    "section": "",
-    "text": "Bioinfomatics関連情報のメモ書き",
-    "crumbs": [
-      "Bioinfomatics"
-    ]
-  },
-  {
-    "objectID": "bioinfo/NCBI/blast.html",
-    "href": "bioinfo/NCBI/blast.html",
-    "title": "BLAST+",
-    "section": "",
-    "text": "以下から、プログラムとデータベースをダウンロード可能\nblast+ download ページ\nBLAST database",
-    "crumbs": [
-      "Bioinfomatics",
-      "NCBI",
-      "BLAST+"
-    ]
-  },
-  {
-    "objectID": "bioinfo/NCBI/blast.html#blast-database",
-    "href": "bioinfo/NCBI/blast.html#blast-database",
-    "title": "BLAST+",
-    "section": "BLAST database",
-    "text": "BLAST database\nダウンロード方法はいくつかある.\n1. FTPサーバーから直接ダウンロード\n2. wgetで取得\n3. ncbi-blast-dbsを使用",
-    "crumbs": [
-      "Bioinfomatics",
-      "NCBI",
-      "BLAST+"
-    ]
-  },
-  {
-    "objectID": "bioinfo/NCBI/ncbi_genome_download.html",
-    "href": "bioinfo/NCBI/ncbi_genome_download.html",
-    "title": "NCBI genome download",
-    "section": "",
-    "text": "ダウンロードするファイル数・サイズが小さければ以下のページから NCBI Genome\nダウンロードするファイル数・サイズが大きければ以下のツールを使用 NCBI Datasets command-line tools\n\n\n\n\nMetadataのダウンロード例\ndatasets summary genome taxon 2 \\\n    --assembly-level complete,chromosome,scaffold,contig \\\n    --assembly-source RefSeq \\\n    --exclude-atypical \\\n    --as-json-lines | \\\n    dataformat tsv genome --fields $field\\\n    &gt; ./Appendix/data/ncbi_data.tsv\n\n\nFigure 1",
-    "crumbs": [
-      "Bioinfomatics",
-      "NCBI",
-      "NCBI genome download"
-    ]
-  },
-  {
-    "objectID": "systems/discrete_time_framework.html",
-    "href": "systems/discrete_time_framework.html",
-    "title": "離散時間システム",
-    "section": "",
-    "text": "観測データが、離散時間システムで支配されていると仮定した時の解釈について述べる\n\n\n\n\n\n\nNote\n\n\n\n実際は、観測データを支配しているシステムの定義は非常に困難\n\n\n\\(x(t+1) = x(t) + F(x(t))\\)\n\\(F\\): 生産率と死亡率を合わせた関数（\\(F = B(x(t)) - D(x(t))\\)）\n\nReferences\n\n\nMiki, Takeshi, et al. “How to quantify interaction strengths? A critical rethinking of the interaction Jacobian and evaluation methods for non-parametric inference in time series analysis.” Physica D: Nonlinear Phenomena 476 (2025): 134613."
-  },
-  {
-    "objectID": "systems/stability/local_stability.html",
-    "href": "systems/stability/local_stability.html",
-    "title": "局所安定性解析",
-    "section": "",
-    "text": "平衡点に達している時に、摂動（ノイズ）が与えられた時に、元の平衡点に戻る力1.\nResilience2に相当する.\n計算としては、すべての固有値で、実数部分が負であれば安定、正の値があれば不安定を意味する."
-  },
-  {
-    "objectID": "systems/stability/local_stability.html#footnotes",
-    "href": "systems/stability/local_stability.html#footnotes",
-    "title": "局所安定性解析",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nMay, 1972↩︎\nHollings, 1993↩︎"
   },
   {
     "objectID": "systems/stability/stability.html",
@@ -239,139 +343,5 @@
     "title": "安定性",
     "section": "",
     "text": "生態学界隈で使われる安定性の定義に関した総説.\nPimm, 1987\nIves and Carpenter, 2007\nMeerbeek et al., 2021\nChen et al., 2024\n評価したいことに対して、適切な安定性指標を用いる必要性がある."
-  },
-  {
-    "objectID": "systems/stability/local_stability.html#以下stefano-allesinaのlecture-noteを参考に解説",
-    "href": "systems/stability/local_stability.html#以下stefano-allesinaのlecture-noteを参考に解説",
-    "title": "局所安定性解析",
-    "section": "以下、Stefano　AllesinaのLecture noteを参考に解説",
-    "text": "以下、Stefano　AllesinaのLecture noteを参考に解説\n連続系の一般化Lotka-Volterraモデルから、システムの安定性を考える.\nGeneralized Lotka-Volterra model\n\\(\\frac{dx_i(t)}{dt} = x_i(t)*(r_i+\\sum_{j}{A_{ij}x_j(t)})\\)\n以上の式の意味は、\n種iの変化量は、種i x (種iの増殖率 + 他種からの影響の総和)\nを意味する.\n\n\nCode\nlibrary(deSolve)\n\ntimes = seq(0, 1000, 0.01)\n\n# %%\nmodel1 &lt;- function(time, N, params) {\n  with(as.list(c(params)), {\n    dN &lt;- r*N * (1 - A %*% N)\n    return(list(as.vector(dN)))\n  })\n}\n\nN1 = runif(4, 0.1, 0.2)\nr = c(1, 0.72, 1.53, 1.27)\nA = t(matrix(c(1, 1.09, 1.52, 0,\n               0, 1, 0.44, 1.36,\n               2.33, 0, 1, 0.47,\n               1.21, 0.51, 0.35, 1), 4, 4))\n\nout = ode(y = N1, times = times, func = model1, parms=c(A=A,r=r))\nout_sub = out [-c(1:500),]\nplot(0, type='n', xlim=c(1,nrow(out_sub)), ylim = range(out_sub[,-1]), cex.axis = 0.8, xlab=\"時間\", ylab = \"個体数\")\nfor(l in 2:ncol(out_sub)) lines(out_sub[,l], col=l)"
-  },
-  {
-    "objectID": "Misc/unix.html",
-    "href": "Misc/unix.html",
-    "title": "Unixコマンド",
-    "section": "",
-    "text": "コマンド\n説明\n例\n\n\n\n\nscp\nサーバーからのファイルをダウンロード\nscp ユーザ名@サーバのホスト名:ファイル名 ローカルのフォルダ"
-  },
-  {
-    "objectID": "stat/glmm.html",
-    "href": "stat/glmm.html",
-    "title": "一般化線形モデル",
-    "section": "",
-    "text": "Generalized linear regression model."
-  },
-  {
-    "objectID": "stat/glmm.html#カテゴリ変数を用いた回帰1",
-    "href": "stat/glmm.html#カテゴリ変数を用いた回帰1",
-    "title": "一般化線形モデル",
-    "section": "カテゴリ変数を用いた回帰1",
-    "text": "カテゴリ変数を用いた回帰1\nカテゴリ変数を用いた回帰では、以下を行なっている.\n- 回帰係数は基準カテゴリとの差\n- 「あるカテゴリが基準カテゴリと平均的に差があるか」を検定\n\\(y = x_{p1}b_1 + x_{p2}b_2 + b_0\\)\n上式の内、\\(x_{p2}\\)が2つの要素(AとB)を持つカテゴリ変数とした時、カテゴリ変数をダミー変数にして,\n\\(A = 1\\)\n\\(B = 0\\)\nここで、それぞれの要素について考えた時、以下のようになる.\nAの時 \\(y = x_{p1}b_1 + b_2 + b_0\\)\nBの時 \\(y = x_{p1}b_1 + b_0\\)\nつまり、同じ\\(x_{p1}\\)の値を持っている時は、平均的に\\(b_2\\)だけ差があるのを意味する."
-  },
-  {
-    "objectID": "stat/glmm.html#footnotes",
-    "href": "stat/glmm.html#footnotes",
-    "title": "一般化線形モデル",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nテキスト「統計的方法論特殊研究（多変量解析)」（分寺杏介, 神戸大学）↩︎"
-  },
-  {
-    "objectID": "stat/lifemap.html",
-    "href": "stat/lifemap.html",
-    "title": "Lifemap",
-    "section": "",
-    "text": "Lifemap"
-  },
-  {
-    "objectID": "bioinfo.html",
-    "href": "bioinfo.html",
-    "title": "Bioinfomatics",
-    "section": "",
-    "text": "aa=1"
-  },
-  {
-    "objectID": "bioinfo/bacteria.html",
-    "href": "bioinfo/bacteria.html",
-    "title": "Bacteria Note",
-    "section": "",
-    "text": "Phylum\nClass\nOrder\nFamily\nGenus\nSpecies\n\n\n\n\nPseudomonadati\nAcidobacteriota\nBlastocatellia\nBlastocatellales"
-  },
-  {
-    "objectID": "r/quiz.html",
-    "href": "r/quiz.html",
-    "title": "プログラムの基礎",
-    "section": "",
-    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop"
-  },
-  {
-    "objectID": "r/quiz.html#プログラムの基礎",
-    "href": "r/quiz.html#プログラムの基礎",
-    "title": "実践で学ぶR",
-    "section": "",
-    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.\n言い換えると、他のフォルダにあるファイルを直接参照することはできない."
-  },
-  {
-    "objectID": "Misc/research_proposal.html",
-    "href": "Misc/research_proposal.html",
-    "title": "研究助成の申請書",
-    "section": "",
-    "text": "科研費（日本学術振興会:JSPS)\n\n1-2ページで以下をまとめる\n\n\n概要\n\n背景・問い・目的と内容・研究達成により得られる成果を最大10行\n\n\n\n背景\n\n前半に分野の背景、後半に自分の研究の構成\n図入りで１ページが目安\n審査員は勉強してその分野に詳しくなりたいわけではない\n\n\n\n着想に至った経緯\n\n研究課題に取り組もうと思った理由・課題にたどりついた経緯\n個人的な研究活動の経験を踏まえて述べる\n\n\n\n研究課題の核心をなす学術的「問い」\n\n研究分野において解決しなければならない課題\n問題と解決の必要性の理由を書く\n「しかしながら〜」で書く\n\n\n\n目的\n\n学術的「問い」を解決することなので、前節に重複してもOK\n\n\n\n学術的独自性と創造性\n\n学術的独自性\n以下が伝わるように書く\n\n申請課題の重要性\nオリジナリティ\n申請者でないとできない理由・優位性\n他の研究と比較して書く\nただし、自分の上位互換は気にしなくていい\n\n\n創造性\n\n研究分野に与えるインパクト\n研究の展開\n他の研究分野、学術全般、あるいは社会に対してどのような影響（波及効果）\n独自性と分量が同程度になるように注意\n\n\n\n\n関連する国内外の研究動向と本研究の位置づけ\n\n学術的「問い」の解決に取り組んでいる国内外の最近 の研究について述べる\nワークショップやシンポジウムを取り上げてもよい？\n後半で、申請課題の研究と他の人の先行研究を比較したときの相違点と優位性を述べる\n\n\n\n3ページ目以降\n\n\n\n本研究で何をどのように、どこまで明らかにしようとするのか\n\n申請書の中で一番重要。図を含めて 1 ページ以上\n冒頭に全研究計画の概要と使用する方法を簡潔にまとめる\n独立に実施できるサブテーマを立てる. 1つのテーマが破綻しても問題がないことをアピール"
-  },
-  {
-    "objectID": "r/quiz.html#フォルダの階層性",
-    "href": "r/quiz.html#フォルダの階層性",
-    "title": "プログラムの基礎",
-    "section": "",
-    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop"
-  },
-  {
-    "objectID": "r/quiz.html#quiz",
-    "href": "r/quiz.html#quiz",
-    "title": "実践で学ぶR",
-    "section": "Quiz",
-    "text": "Quiz"
-  },
-  {
-    "objectID": "r/quiz.html#rでの操作",
-    "href": "r/quiz.html#rでの操作",
-    "title": "プログラムの基礎",
-    "section": "2. Rでの操作",
-    "text": "2. Rでの操作\n自分がどこにいるのか＝working directoryを調べる方法はgetwd()を用いる.\n括弧の中は、何も入れない.\n\ncurrent_dir = getwd()\nprint(current_dir)\n\nWorking directoryを変えるには、setwd()を用いる.\n括弧の中に変更先のフォルダ名を入れる. フォルダ名はダブルクォーテション（““）で括る.\n\nsetwd(\"/home/user/folder\")\n\n\nファイル・フォルダの操作\nRからファイルやフォルダを操作することができるので、その例を紹介する.\n\n\n\n関数名\n機能\n\n\n\n\ndir.create()\nフォルダの作成\n\n\nlist.files()\nWorking directory内のファイル一覧を表示\n\n\nlist.dirs()\nWorking directory内のフォルダ一覧を表示\n\n\n\n\ndir.create()\n括弧内に作りたいフォルダ名を記入.\nWorking directoryに新しいフォルダは作られる.\n\n\ndir.create(\"folder\")\n\n\nlist.files() 指定したフォルダ内のファイル一覧を表示. デフォルトではWorking directoryを検索する. full.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.files(\"folder\", full.names=TRUE) \n\n\nlist.dirs()\n指定したフォルダ内のフォルダ一覧を表示. デフォルトではWorking directoryを検索する.\nfull.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.dirs(\"folder\", full.names=TRUE)"
-  },
-  {
-    "objectID": "r/programing.html",
-    "href": "r/programing.html",
-    "title": "プログラムの基礎",
-    "section": "",
-    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "プログラムの基礎"
-    ]
-  },
-  {
-    "objectID": "r/programing.html#フォルダの階層性",
-    "href": "r/programing.html#フォルダの階層性",
-    "title": "プログラムの基礎",
-    "section": "",
-    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "プログラムの基礎"
-    ]
-  },
-  {
-    "objectID": "r/programing.html#rでの操作",
-    "href": "r/programing.html#rでの操作",
-    "title": "プログラムの基礎",
-    "section": "2. Rでの操作",
-    "text": "2. Rでの操作\n自分がどこにいるのか＝working directoryを調べる方法はgetwd()を用いる.\n括弧の中は、何も入れない.\n\ncurrent_dir = getwd()\nprint(current_dir)\n\nWorking directoryを変えるには、setwd()を用いる.\n括弧の中に変更先のフォルダ名を入れる. フォルダ名はダブルクォーテション（““）で括る.\n\nsetwd(\"/home/user/folder\")\n\n\nファイル・フォルダの操作\nRからファイルやフォルダを操作することができるので、その例を紹介する.\n\n\n\n関数名\n機能\n\n\n\n\ndir.create()\nフォルダの作成\n\n\nlist.files()\nWorking directory内のファイル一覧を表示\n\n\nlist.dirs()\nWorking directory内のフォルダ一覧を表示\n\n\n\n\ndir.create()\n括弧内に作りたいフォルダ名を記入.\nWorking directoryに新しいフォルダは作られる.\n\n\ndir.create(\"folder\")\n\n\nlist.files() 指定したフォルダ内のファイル一覧を表示. デフォルトではWorking directoryを検索する. full.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\n\nlist.files(\"folder\", full.names=TRUE) \n\n\nlist.dirs()\n指定したフォルダ内のフォルダ一覧を表示. デフォルトではWorking directoryを検索する.\nfull.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.dirs(\"folder\", full.names=TRUE)",
-    "crumbs": [
-      "R wiki",
-      "基礎",
-      "プログラムの基礎"
-    ]
   }
 ]

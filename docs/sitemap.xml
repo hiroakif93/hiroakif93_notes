@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://github.com/hiroakif93/systems/ricker.html</loc>
-    <lastmod>2025-08-03T00:31:09.370Z</lastmod>
+    <loc>https://github.com/hiroakif93/systems/discrete_time_framework.html</loc>
+    <lastmod>2025-07-31T01:49:16.691Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/stability/local_stability.html</loc>
+    <lastmod>2025-08-04T07:29:39.383Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/network/laplacian.html</loc>
+    <lastmod>2025-07-28T06:58:26.125Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/nonlinear_analysis/Empirical_dynamic_modeling.html</loc>
+    <lastmod>2025-07-31T00:51:08.856Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/stat/glmm.html</loc>
+    <lastmod>2025-08-05T08:28:30.661Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/hiroakif93/index.html</loc>
     <lastmod>2025-08-15T07:22:29.632Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/r/index.html</loc>
-    <lastmod>2025-07-28T04:29:16.278Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/index.html</loc>
-    <lastmod>2025-07-31T00:25:19.455Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/Misc/markdown.html</loc>
-    <lastmod>2025-08-02T02:51:27.526Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/hiroakif93/bioinfo/index.html</loc>
@@ -29,63 +33,63 @@
     <lastmod>2025-07-30T02:51:50.410Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/hiroakif93/bioinfo/NCBI/ncbi_genome_download.html</loc>
-    <lastmod>2025-07-30T02:26:17.302Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/discrete_time_framework.html</loc>
-    <lastmod>2025-07-31T01:49:16.691Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/nonlinear_analysis/Empirical_dynamic_modeling.html</loc>
-    <lastmod>2025-07-31T00:51:08.856Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/stability/local_stability.html</loc>
-    <lastmod>2025-08-04T07:29:39.383Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/stability/stability.html</loc>
-    <lastmod>2025-08-02T02:33:24.211Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/systems/network/index.html</loc>
-    <lastmod>2025-08-03T00:31:32.475Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/Misc/unix.html</loc>
-    <lastmod>2025-08-02T03:47:59.700Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/bioinfo.html</loc>
-    <lastmod>2025-08-15T07:13:16.432Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/stat/glmm.html</loc>
-    <lastmod>2025-08-05T08:28:30.661Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/stat/lifemap.html</loc>
-    <lastmod>2025-08-05T08:57:30.055Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/bioinfo/bacteria.html</loc>
-    <lastmod>2025-09-04T00:34:59.920Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/r/quiz.html</loc>
-    <lastmod>2025-09-17T06:18:30.678Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/hiroakif93/Misc/research_proposal.html</loc>
-    <lastmod>2025-09-11T03:51:50.461Z</lastmod>
+    <loc>https://github.com/hiroakif93/r/grammer.html</loc>
+    <lastmod>2025-07-28T04:48:31.225Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/hiroakif93/r/programing.html</loc>
     <lastmod>2025-09-17T06:58:03.843Z</lastmod>
   </url>
   <url>
+    <loc>https://github.com/hiroakif93/Misc/unix.html</loc>
+    <lastmod>2025-08-02T03:47:59.700Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/Misc/research_proposal.html</loc>
+    <lastmod>2025-09-11T03:51:50.461Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/Misc/markdown.html</loc>
+    <lastmod>2025-09-17T07:12:40.738Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/Misc/unix copy.html</loc>
+    <lastmod>2025-09-18T00:00:54.009Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/r/index.html</loc>
+    <lastmod>2025-07-28T04:29:16.278Z</lastmod>
+  </url>
+  <url>
     <loc>https://github.com/hiroakif93/r/object.html</loc>
     <lastmod>2025-07-28T04:48:33.045Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/bioinfo/NCBI/ncbi_genome_download.html</loc>
+    <lastmod>2025-07-30T02:26:17.302Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/bioinfo/bacteria.html</loc>
+    <lastmod>2025-09-04T00:34:59.920Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/stat/lifemap.html</loc>
+    <lastmod>2025-08-05T08:57:30.055Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/ricker.html</loc>
+    <lastmod>2025-08-03T00:31:09.370Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/network/index.html</loc>
+    <lastmod>2025-08-03T00:31:32.475Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/index.html</loc>
+    <lastmod>2025-07-31T00:25:19.455Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/hiroakif93/systems/stability/stability.html</loc>
+    <lastmod>2025-08-02T02:33:24.211Z</lastmod>
   </url>
 </urlset>

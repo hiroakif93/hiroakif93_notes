@@ -182,7 +182,7 @@ window.Quarto = {
   <ul>
   <li><a href="#以下stefano-allesinaのlecture-noteを参考に解説" id="toc-以下stefano-allesinaのlecture-noteを参考に解説" class="nav-link active" data-scroll-target="#以下stefano-allesinaのlecture-noteを参考に解説">以下、Stefano　AllesinaのLecture noteを参考に解説</a></li>
   </ul>
-<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://github.com/hiroakif93/"><i class="bi bi-link-45deg"></i>Hiroaki Fujita's Website</a></li></ul></div></nav>
+<div class="quarto-other-links"><h2>Other Links</h2><ul><li><a href="https://hiroakif93.github.io/"><i class="bi bi-link-45deg"></i>Hiroaki Fujita's Website</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -226,34 +226,49 @@ Resilience<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><su
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deSolve)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lv_fun <span class="ot">=</span> \(A, r, N) r<span class="sc">*</span>N <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> A <span class="sc">%*%</span> N)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>times <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1000</span>, <span class="fl">0.01</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>model <span class="ot">=</span> <span class="cf">function</span>(time, <span class="at">dt=</span><span class="dv">1000</span>, A, r, N0){</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># %%</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="cf">function</span>(time, N, params) {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">as.list</span>(<span class="fu">c</span>(params)), {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    dN <span class="ot">&lt;-</span> r<span class="sc">*</span>N <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> A <span class="sc">%*%</span> N)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="fu">as.vector</span>(dN)))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">4</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.72</span>, <span class="fl">1.53</span>, <span class="fl">1.27</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.09</span>, <span class="fl">1.52</span>, <span class="dv">0</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>               <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.44</span>, <span class="fl">1.36</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>               <span class="fl">2.33</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.47</span>,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>               <span class="fl">1.21</span>, <span class="fl">0.51</span>, <span class="fl">0.35</span>, <span class="dv">1</span>), <span class="dv">4</span>, <span class="dv">4</span>))</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>out <span class="ot">=</span> <span class="fu">ode</span>(<span class="at">y =</span> N1, <span class="at">times =</span> times, <span class="at">func =</span> model1, <span class="at">parms=</span><span class="fu">c</span>(<span class="at">A=</span>A,<span class="at">r=</span>r))</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>out_sub <span class="ot">=</span> out [<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>),]</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">type=</span><span class="st">'n'</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(out_sub)), <span class="at">ylim =</span> <span class="fu">range</span>(out_sub[,<span class="sc">-</span><span class="dv">1</span>]), <span class="at">cex.axis =</span> <span class="fl">0.8</span>, <span class="at">xlab=</span><span class="st">"時間"</span>, <span class="at">ylab =</span> <span class="st">"個体数"</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(l <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">ncol</span>(out_sub)) <span class="fu">lines</span>(out_sub[,l], <span class="at">col=</span>l)</span></code></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">ncol=</span><span class="fu">length</span>(N0), <span class="at">nrow=</span>time)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    mat[<span class="dv">1</span>,] <span class="ot">=</span> N <span class="ot">=</span> N0</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>time){</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(ddt <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>dt){</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>          dn <span class="ot">=</span> <span class="fu">lv_fun</span>(A, r, N)      </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>          N <span class="ot">=</span> N<span class="sc">+</span>dn<span class="sc">/</span>dt</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      }      </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      mat[t,] <span class="ot">=</span> N</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    mat</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.72</span>, <span class="fl">1.53</span>, <span class="fl">1.27</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">t</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.09</span>, <span class="fl">1.52</span>, <span class="dv">0</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>               <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.44</span>, <span class="fl">1.36</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>               <span class="fl">2.33</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.47</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>               <span class="fl">1.21</span>, <span class="fl">0.51</span>, <span class="fl">0.35</span>, <span class="dv">1</span>), <span class="dv">4</span>, <span class="dv">4</span>))</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">=</span> <span class="fu">model</span>(<span class="at">time=</span><span class="dv">1000</span>, <span class="at">dt=</span><span class="dv">1000</span>, A, r, <span class="at">N0=</span><span class="fu">runif</span>(<span class="dv">4</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mat[,<span class="dv">1</span>])</span></code></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="local_stability_files/figure-html/unnamed-chunk-1-1.png" width="672" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="at">type=</span><span class="st">'n'</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(mat)), <span class="at">ylim =</span> <span class="fu">range</span>(mat), <span class="at">cex.axis =</span> <span class="fl">0.8</span>, <span class="at">xlab=</span><span class="st">"時間"</span>, <span class="at">ylab =</span> <span class="st">"個体数"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(l <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mat)) <span class="fu">lines</span>(mat[,l], <span class="at">col=</span>l)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="local_stability_files/figure-html/unnamed-chunk-1-2.png" width="672" class="figure-img"></p>
 </figure>
 </div>
 </div>
