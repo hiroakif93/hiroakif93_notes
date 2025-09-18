@@ -205,7 +205,12 @@
     "href": "bioinfo/NCBI/ncbi_genome_download.html",
     "title": "NCBI genome download",
     "section": "",
-    "text": "ダウンロードするファイル数・サイズが小さければ以下のページから NCBI Genome\nダウンロードするファイル数・サイズが大きければ以下のツールを使用 NCBI Datasets command-line tools\n\n\n\n\nMetadataのダウンロード例\ndatasets summary genome taxon 2 \\\n    --assembly-level complete,chromosome,scaffold,contig \\\n    --assembly-source RefSeq \\\n    --exclude-atypical \\\n    --as-json-lines | \\\n    dataformat tsv genome --fields $field\\\n    &gt; ./Appendix/data/ncbi_data.tsv\n\n\nFigure 1"
+    "text": "ダウンロードするファイル数・サイズが小さければ以下のページから NCBI Genome\nダウンロードするファイル数・サイズが大きければ以下のツールを使用 NCBI Datasets command-line tools\n\n\n\n\nMetadataのダウンロード例\ndatasets summary genome taxon 2 \\\n    --assembly-level complete,chromosome,scaffold,contig \\\n    --assembly-source RefSeq \\\n    --exclude-atypical \\\n    --as-json-lines | \\\n    dataformat tsv genome --fields $field\\\n    &gt; ./Appendix/data/ncbi_data.tsv\n\n\nFigure 1",
+    "crumbs": [
+      "Bioinfomatics",
+      "NCBI",
+      "NCBI genome download"
+    ]
   },
   {
     "objectID": "systems/discrete_time_framework.html",
@@ -332,5 +337,41 @@
     "title": "プログラムの基礎",
     "section": "2. Rでの操作",
     "text": "2. Rでの操作\n自分がどこにいるのか＝working directoryを調べる方法はgetwd()を用いる.\n括弧の中は、何も入れない.\n\ncurrent_dir = getwd()\nprint(current_dir)\n\nWorking directoryを変えるには、setwd()を用いる.\n括弧の中に変更先のフォルダ名を入れる. フォルダ名はダブルクォーテション（““）で括る.\n\nsetwd(\"/home/user/folder\")\n\n\nファイル・フォルダの操作\nRからファイルやフォルダを操作することができるので、その例を紹介する.\n\n\n\n関数名\n機能\n\n\n\n\ndir.create()\nフォルダの作成\n\n\nlist.files()\nWorking directory内のファイル一覧を表示\n\n\nlist.dirs()\nWorking directory内のフォルダ一覧を表示\n\n\n\n\ndir.create()\n括弧内に作りたいフォルダ名を記入.\nWorking directoryに新しいフォルダは作られる.\n\n\ndir.create(\"folder\")\n\n\nlist.files() 指定したフォルダ内のファイル一覧を表示. デフォルトではWorking directoryを検索する. full.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.files(\"folder\", full.names=TRUE) \n\n\nlist.dirs()\n指定したフォルダ内のフォルダ一覧を表示. デフォルトではWorking directoryを検索する.\nfull.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.dirs(\"folder\", full.names=TRUE)"
+  },
+  {
+    "objectID": "r/programing.html",
+    "href": "r/programing.html",
+    "title": "プログラムの基礎",
+    "section": "",
+    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
+  },
+  {
+    "objectID": "r/programing.html#フォルダの階層性",
+    "href": "r/programing.html#フォルダの階層性",
+    "title": "プログラムの基礎",
+    "section": "",
+    "text": "Rをはじめとしたプログラムは、1つのフォルダ上で作業を行う.言い換えると、他のフォルダにあるファイルを直接参照することはできない.\nこの参照しているフォルダをworking directoryと呼ぶ.\n\n\nプログミングを行う際は、自分がどこのフォルダにいるのかを理解しないと、読み込みたいファイルを読み込めなかったり、結果の出力先がどこかわからないという事態に陥る.\n\n\n\n\n\n\n\n\n\nコンピューター内で、ファイルは木構造のような階層性をもって管理される。\n　つまり、根っこにある大元のフォルダの中に細分化されたフォルダがあり、それらのフォルダそれぞれにさらに細分化されたフォルダがある。\n\n\n\n\n\nこのフォルダの所在をパス(Path)と呼ぶ.\n\nフォルダの指定の仕方は２通りある.\n\n絶対パス\n根っこにある大元のフォルダ(rootフォルダ)を起点とした記述方法.\n例：/root/folder/branch/leaf\n相対パス working directoryを起点としたパスの記述方法\n例1：working directoryがfolderの時のleafフォルダの指定\nbranch/leaf ← フォルダ間は/（スラッシュ）で区切る.\n例2：folderがleafの時のbranchフォルダの指定\n../ ← これで一つ上のフォルダを意味する.\n\n以下によく使うパスの記法を示す.\n\n\n\n\n\n\n\n書き方\n意味\n\n\n\n\n/\nスラッシュだけだとルートフォルダを指す\n\n\n./\nworking directory\n\n\n../\n一つ上のフォルダ\n\n\n~/\nホームディレクトリ.デスクトップが入っているフォルダを指すことが多い\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n以下に示すように、OSごとにルートのフォルダ名は異なる.\nMacOSのデスクトップまでの絶対パス\n/Users/username/Desktop\nWindowsのデスクトップまでの絶対パス\nC:/Users/username/Desktop",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
+  },
+  {
+    "objectID": "r/programing.html#rでの操作",
+    "href": "r/programing.html#rでの操作",
+    "title": "プログラムの基礎",
+    "section": "2. Rでの操作",
+    "text": "2. Rでの操作\n自分がどこにいるのか＝working directoryを調べる方法はgetwd()を用いる.\n括弧の中は、何も入れない.\n\ncurrent_dir = getwd()\nprint(current_dir)\n\nWorking directoryを変えるには、setwd()を用いる.\n括弧の中に変更先のフォルダ名を入れる. フォルダ名はダブルクォーテション（““）で括る.\n\nsetwd(\"/home/user/folder\")\n\n\nファイル・フォルダの操作\nRからファイルやフォルダを操作することができるので、その例を紹介する.\n\n\n\n関数名\n機能\n\n\n\n\ndir.create()\nフォルダの作成\n\n\nlist.files()\nWorking directory内のファイル一覧を表示\n\n\nlist.dirs()\nWorking directory内のフォルダ一覧を表示\n\n\n\n\ndir.create()\n括弧内に作りたいフォルダ名を記入.\nWorking directoryに新しいフォルダは作られる.\n\n\ndir.create(\"folder\")\n\n\nlist.files() 指定したフォルダ内のファイル一覧を表示. デフォルトではWorking directoryを検索する. full.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\n\nlist.files(\"folder\", full.names=TRUE) \n\n\nlist.dirs()\n指定したフォルダ内のフォルダ一覧を表示. デフォルトではWorking directoryを検索する.\nfull.names=TRUEだと絶対パス\nfull.names=FALSEだと相対パス\n\n\nlist.dirs(\"folder\", full.names=TRUE)",
+    "crumbs": [
+      "R wiki",
+      "基礎",
+      "プログラムの基礎"
+    ]
   }
 ]
