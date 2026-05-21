@@ -1,0 +1,11 @@
+---
+title: "Python環境構築"
+format: html
+---
+
+-   環境構築\
+    `uv venv name`
+    作業フォルダ内に環境用のフォルダが作られる.  
+-   環境立ち上げ\
+    `source name/bin/activate`
+    作業フォルダ内に環境用のフォルダから環境立ち上げ

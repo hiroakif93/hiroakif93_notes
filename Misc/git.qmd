@@ -1,0 +1,38 @@
+---
+title: "git"
+format: html
+---
+
+## 立ち上げ方
+```bash
+git init
+git add .
+git commit -m "first commit"
+git remote add server <URL>
+git push -u server main
+```
+
+`git push -u server main`は`git branch --set-upstream-to=origin/main main`を省略した上で`push`.
+
+## ワークフロー
+### Server**に**反映する時
+```bash
+git add <更新したファイル>
+git commit -m "更新内容"
+
+git push
+```
+
+### Server**から**反映する時
+```bash
+git fetch server
+git log --oneline --all --graph
+#問題なければ
+git merge server/main
+```
+もしくは
+```bash
+git pull server main
+```
+
+### Commitをリセット

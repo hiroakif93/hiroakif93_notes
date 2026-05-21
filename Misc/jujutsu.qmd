@@ -1,0 +1,214 @@
+---
+title: "jujutsu"
+format: html
+---
+
+## Gitとの違い  
+- GitのWrapperプログラムという認識.  
+- 自動で、ファイルの変更を記録してくれる (自動更新を切ることも可能).  
+  
+### キーワード  
+- Change ID  
+  gitと違って、jujutsuは自動で変更履歴を記録する.　　
+  変更履歴記録時に付与されるID  
+- Commit ID  
+  明示的に変更を記録するときに付与されるID.  
+  gitのadd+commitに対応する.  
+- Description
+  Commitした時の内容.
+- [bookmark](https://jj-for-everyone.github.io/branch.html)  
+  remote repositroyにアップロード(push)する時に必要なラベル.  
+  文字通り、栞を挟む作業.(jujutsuはbranchと用語を使い分けてる)
+
+## [Install and setup](https://docs.jj-vcs.dev/latest/install-and-setup/)  
+Softwareのインストール
+```bash
+brew install jj
+
+#or
+cargo install --git https://github.com/jj-vcs/jj.git --locked --bin jj jj-cli
+```
+
+使用前の設定
+```bash
+jj config set --user user.name "...."
+jj config set --user user.email "....@...."
+source <(jj util completion bash)
+```
+
+## WorkFlow
+### Initialization
+- ローカル環境でのリポジトリの立ち上げ
+```bash
+jj git init <path （省略可）>
+jj git remote add <repo name> <remote repo url>
+
+# ブランチの設定
+jj bookmark create main 
+jj bookmark track main --remote=origin #自動でファイル追尾
+```
+
+- `jj git clone `: リモート先のリポジトリからの立ち上げ  
+
+#### 詳細
+1. `jj`の見方
+```
+jj git init ./
+jj log
+```
+```
+@  lwkzoptu your_email 2026-04-13 11:21:48 b32fea36
+│  (no description set)
+◆  zzzzzzzz root() 00000000
+```
+- lwkzoptu = Change ID
+- b32fea36 = commit hash
+- (no description set) = Commitした内容. Descriptionという.
+ファイルを変更すると、自動でcommit hashが変更される.
+
+2. `new commit`
+```
+jj commit -m "change log"
+jj log
+```
+```
+@  vxmwqxup hiroakif93ecology@gmail.com 2026-04-13 11:33:04 96c2d9b2
+│  (empty) (no description set)
+○  lwkzoptu hiroakif93ecology@gmail.com 2026-04-13 11:33:04 055ea77a
+│  change log
+◆  zzzzzzzz root() 00000000
+```
+Commitすることで、Change IDが変更される.
+
+3. remoteへの紐付け
+```
+jj git remote add origin <url>
+jj git remote list
+```
+bookmarkの作成
+どのChangeIDをbookmarkするか指定可能.
+`--revision`を省略したら、最新のChangeIDにbookmarkが挟まる.
+```
+jj bookmark create main --revision lwkzoptu
+```
+
+4. remoteへアップロード
+明示的にbookmarkを指定してアップロード(Descriptionがないとエラー)
+```
+jj git push --bookmark main
+```
+
+bookmarkの指定なしでremoteに上げるには、bookmarkを先頭に紐づける
+```
+jj bookmark move main --to @-
+jj git push 
+```
+
+5. pull
+リモートの変更を呼び出すには以下のコマンドを用いる
+```
+jj git fetch
+jj log
+```
+そうすると、誰かの変更はブランチとして分かれる
+```
+@  mmytmqvl ... 2026-04-13 11:49:43 b7f55d0d
+│  (empty) (no description set)
+│ ○  tzsupxzz 73891758+...@users.noreply.github.com 2026-04-13 11:58:59 main2 0a30db9a
+├─╯  Create README.md
+◆  vxmwqxup ... 2026-04-13 11:49:43 main 2ec50b9c
+│  (empty) add main2
+~
+```
+マージするには以下のようにする.
+```
+jj new main2@origin @-
+jj log
+```
+```
+@    xtouusst ... 2026-04-13 12:04:13 33092ce3
+├─╮  (empty) (no description set)
+○ │  tzsupxzz 73891758+...@users.noreply.github.com 2026-04-13 11:58:59 main2 0a30db9a
+├─╯  Create README.md
+◆  vxmwqxup ... 2026-04-13 11:49:43 main 2ec50b9c
+│  (empty) add main2
+~
+```
+6. どれかのBookmarkを起点にして、マージするとき
+```
+@    xtouusst hiroakif93ecology@gmail.com 2026-04-13 12:09:02 2d5ceb8c
+├─╮  (no description set)
+│ │ ○  vppvtvvu 73891758+hiroakif93@users.noreply.github.com 2026-04-13 12:08:04 **main2** 95127135
+│ │ │  Create test.md
+│ │ ○  nvnrkzmq 73891758+hiroakif93@users.noreply.github.com 2026-04-13 12:07:48 3bc870fd
+├───╯  Update README.md
+○ │  tzsupxzz 73891758+hiroakif93@users.noreply.github.com 2026-04-13 11:58:59 0a30db9a
+├─╯  Create README.md
+◆  vxmwqxup hiroakif93ecology@gmail.com 2026-04-13 11:49:43 main 2ec50b9c
+│  (empty) add main2
+```
+リモートの変更はmain2@originにあるとき、以下のようにする
+```
+jj rebase --onto main2@origin
+```
+
+#### [マージとrebaseの違い](https://jj-for-everyone.github.io/rebase.html)  
+|方法	|利点	|欠点|
+|:--|:--|:--|
+|merge|	実際に起こった履歴をそのまま保持できる。|	履歴が入り組んで読みにくくなることがある。|
+|rebase|	履歴が直線的になり、読みやすい。|	実際に起こった順序とは違う履歴になる。|
+
+7. 新しいブランチを作るとき
+
+`jj new <すでにあるBookmark>`
+
+
+----
+
+### Commit to push
+```bash
+jj commit -m "" <filename>
+# 間違えた時
+# jj undo
+# undoの取り消しは
+# jj redo
+jj bookmark move main --to @-
+jj git push
+```
+
+bookmarkがなんでもいいときに、アップロードするには以下のようにする
+```
+jj commit -m "" <filename>
+jj git push --change @-
+```
+
+### fetch to push
+```bash
+jj fetch
+jj rebase --onto main@origin
+jj git push
+```
+
+
+### Commands
+| コマンド | 説明 |
+|:--|---|
+| `jj log` | 変更履歴全体の確認 |
+| `jj commit` | 変更内容を反映 |
+| `jj bookmark move <bookmark> --to @-` | 最新の変更内容をbookmarkに反映 |
+| `jj git push` | リモートに変更履歴をあげる |
+| `jj git fetch` | リモートの変更履歴を呼び込む |
+| `jj new main @-` | Bookmarkにブランチを作成 |
+| `jj git push --change @-` | 最新の変更をリモートにあげる |
+| `jj st` | Status check. Parent commit: 直前のコミット履歴、Working Copy: 次のコミットの情報 |
+| `jj describe` | コミットの内容を記述 |
+| `jj diff` | 何を変更したかの確認 |
+| `jj new` | ブランチへ変更の反映 |
+| `jj bookmark create` | bookmarkの作成 |
+| `jj file untrack` | 変更履歴の追跡をやめる |
+| `jj undo` | 直前の操作を取り消す |
+| `jj redo` | 取り消した操作をやり直す |
+| `jj bookmark track <NAME>` | bookmarkを追跡する |
+| `jj abandon <CHANGE_ID>` | コミットを削除する（それを指しているbookmarkも含む） |
+| `jj restore [--from <CHANGE_ID>] [FILE_TO_RESTORE]` | ファイルを復元する |
+| `jj commit --interactive` | 対話的にコミットする |
