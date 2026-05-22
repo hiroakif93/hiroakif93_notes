@@ -5,7 +5,7 @@ project:
 
 format:
   html:
-    theme: 
+    theme:
       - custom.scss
     minimal: true
     css: styles.css
@@ -19,7 +19,7 @@ brand: _brand.yaml
 website:
   title: "hiroakif93's Notes"
   site-url: "https://github.com/hiroakif93/"
-  page-footer: 
+  page-footer:
     left: |
       <p style="text-align: left; padding-left: 5%;">
         Copyright 2024, Hiroaki Fujita.<br>
@@ -27,13 +27,13 @@ website:
         Center for Living Systems Information Science (CeLiSIS),<br>
         Kyoto University.
       </p>
-      
-    right:       
+
+    right:
       - icon: github
         href: https://github.com/hiroakif93
-      - text: Google scholar 
+      - text: Google scholar
         href: https://scholar.google.com/citations?hl=ja&user=YaIBsrwAAAAJ
-  
+
   navbar:
     background: primary
     search: true
@@ -46,28 +46,29 @@ website:
         href: bioinfo/index.qmd
       - text: "Dynamical systems"
         href: systems/index.qmd
-  
-  
+      - text: "Misc"
+        href: Misc/index.qmd
+
   sidebar:
     - title: "Dynamical system"
       style: "docked"
-      contents: 
+      contents:
         - section: Principal
-          contents: 
+          contents:
             - systems/index.qmd
             - systems/ricker.qmd
             - systems/stability.qmd
         - section: Network
           collapsed: true
-          contents: 
+          contents:
             - systems/network/index.qmd
             - systems/network/laplacian.qmd
-          
+
     - title: "Rwiki"
       style: "docked"
-      contents: 
+      contents:
         - section: 基礎
-          contents: 
+          contents:
             - r/index.qmd
             - r/programing.qmd
             - r/object.qmd
@@ -76,14 +77,20 @@ website:
 
     - title: "Bioinfo"
       style: "docked"
-      contents: 
+      contents:
         - bioinfo/index.qmd
         - section: NCBI
-          contents: 
+          contents:
             - bioinfo/NCBI/blast.qmd
             - bioinfo/NCBI/ncbi_genome_download.qmd
-            
 
-  
+    - title: "Misc"
+      style: "docked"
+      contents:
+        - Misc/index.qmd
+        - contents:
+            - Misc/research_proposal.qmd
+            - Misc/markdown.qmd
+            - Misc/jujutsu.qmd
+
 editor: visual
-
